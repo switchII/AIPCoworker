@@ -3,22 +3,156 @@
 > 基于 **Tauri 2 + Vue 3 + TypeScript** 构建的桌面 AI 智能协同工作台。
 > 提供完整的 Agent 任务执行、Plan-Execute 规划、ReAct 推理、技能管理、MCP 工具集成、记忆系统、子代理协作等核心能力。
 
-仓库地址：<https://gitee.com/eastonii/aipcowork.git>
+仓库地址：<https://github.com/switchII/AIPCoworker.git>
+
+---
+
+## 核心代码
+
+> **Gemma 4 原生函数调用（Native Function Calling）实现**
+
+本项目采用 **Google Gemma 4** 作为核心推理引擎，通过 OpenAI 兼容 API 协议进行对接。Gemma 4 原生支持 Function Calling，模型可直接输出结构化的工具调用指令（tool_calls），无需中间解析层，保障调用链路的低延迟与高可靠性。
+
+### LLM 统一客户端（[`src/agent/llm/llmClient.ts`](src/agent/llm/llmClient.ts)）
+
+统一的 LLM 调用入口，封装了 OpenAI 兼容协议（Gemma 4 使用该协议接入）与 Anthropic 协议的差异，对外暴露一致的 `chat` / `chatRaw` / `streamChat` 接口。
+
+**Native Function Calling 核心实现**：
+
+```ts
+// 工具定义传递给模型（OpenAI function-calling 格式，Gemma 4 原生支持）
+export interface ToolDefinition {
+  type: 'function'
+  function: {
+    name: string
+    description: string
+    parameters: Record<string, unknown>
+  }
+}
+
+// 模型返回的工具调用（流式 + 非流式统一结构）
+export interface ToolCall {
+  id?: string
+  index?: number
+  name: string
+  arguments: string
+}
+```
+
+- **非流式 Function Calling**（`chatRawOpenAI`）：解析响应中的 `tool_calls` 数组，提取 `function.name` 与 `function.arguments`，返回结构化 `RawChatResponse`
+- **流式 Function Calling**（`streamOpenAI`）：实时解析 SSE 流中的 `delta.tool_calls`，按 `index` 累积多工具并行调用的参数片段
+- **多工具并行**：流式模式下通过 `toolCallMap`（key 为 index）聚合多个并发工具调用的增量参数，确保不丢失不混淆
+
+### ReAct Agent 循环（[`src/agent/core/reactAgent.ts`](src/agent/core/reactAgent.ts)）
+
+实现 Reason-Act-Observe 标准循环，是 Gemma 4 Native Function Calling 的调度中枢：
+
+1. **构建请求**：将用户消息、对话历史、工具定义（`ToolDefinition[]`）组装为 OpenAI 兼容请求体，`tools` 参数直接注入 Gemma 4 的 function-calling 通道
+2. **LLM 调用**：通过 `chatRaw()` 或 `callLLMStreaming()` 调用 Gemma 4，模型根据上下文自主决策是否发起工具调用
+3. **工具执行**：解析 Gemma 4 返回的 `tool_calls` → 匹配本地工具执行器 → 获取结果 → 构造 `role: 'tool'` 消息回传模型
+4. **迭代循环**：Gemma 4 收到工具结果后继续推理，可能发起新一轮工具调用或输出最终答案
+5. **终止判断**：当 Gemma 4 仅返回文本（无 tool_calls）时终止循环；Plan-Execute 模式下还会检查计划完成度，未完成则强制继续（最多 5 次）
+
+**关键代码路径**：
+
+```
+用户输入 → TaskRunner → ReAct Agent → LLM Client (Gemma 4)
+    │                                    │
+    │  tools: ToolDefinition[] ──────────┘  (函数定义注入)
+    │                                    │
+    │  ← tool_calls: ToolCall[] ─────────┘  (Gemma 4 原生输出)
+    │                                    │
+    │  executeTool(name, args) ─────────→│  (工具执行)
+    │                                    │
+    │  ← role: 'tool' message ────────→  │  (结果回传)
+    │                                    │
+    ↓  ← text (无 tool_calls 时) ──────  │  (最终答案)
+ 完成
+```
+
+### Gemma 4 配置入口（[`src/agent/llm/providerConfigs.ts`](src/agent/llm/providerConfigs.ts)）
+
+通过统一的 Provider 配置体系接入 Gemma 4，支持 Ollama 本地部署（`http://127.0.0.1:11434`）、LM Studio、自定义 OpenAI 兼容端点三种方式。Gemma 4 作为 `openai-compatible` 格式的模型，零改造即可纳入现有工具链。
+
+---
+
+## 技术报告
+
+### 模型选型：为何选择 Gemma 4
+
+本项目选择 Gemma 4 作为核心推理引擎，核心理由聚焦以下三点：
+
+| 维度 | 选型理由 |
+| ---- | -------- |
+| **内网部署** | Gemma 4 支持通过 Ollama、LM Studio 等本地推理框架在内网环境中部署运行，无需连接外部 API 服务。所有推理计算均在本地完成，数据不出内网，满足企业对数据安全的合规要求 |
+| **消费级 GPU 可运行** | Gemma 4 提供多种参数规模，在消费级 GPU（单卡 RTX 4090 24GB）上即可流畅运行，无需昂贵的服务器级硬件。这降低了企业部署门槛，使 AI 能力可以下沉到个人工作站 |
+| **企业私有化部署，不出域** | Gemma 4 作为开源模型，支持完全私有化部署。企业可在内部服务器或个人工作站上独立运行，模型权重、推理过程、用户数据全程不离开企业内网，杜绝数据外泄风险 |
+
+### 架构设计
+
+AIPCowork 采用 **"外壳-前端-引擎"三层解耦架构**，以 Tauri 2 为桌面外壳、Vue 3 为前端交互层、TypeScript Agent 引擎为智能核心：
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   Tauri 2 桌面外壳                    │
+│  ┌──────────┐ ┌──────────┐ ┌────────────────────┐  │
+│  │ 原生对话框 │ │ 桌面通知  │ │ 文件系统（Rust）    │  │
+│  └──────────┘ └──────────┘ └────────────────────┘  │
+├─────────────────────────────────────────────────────┤
+│                   Vue 3 前端交互层                    │
+│  ┌──────────┐ ┌──────────┐ ┌────────────────────┐  │
+│  │ 任务视图  │ │ 技能管理  │ │ IM / 定时 / 设置     │  │
+│  └──────────┘ └──────────┘ └────────────────────┘  │
+├─────────────────────────────────────────────────────┤
+│               TypeScript Agent 智能引擎              │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               TaskRunner（任务编排）            │   │
+│  │  ┌─────────┐  ┌──────────┐  ┌────────────┐  │   │
+│  │  │ReAct    │  │Plan      │  │SubAgent    │  │   │
+│  │  │Agent    │  │Agent     │  │Runner      │  │   │
+│  │  └────┬────┘  └──────────┘  └────────────┘  │   │
+│  │       │                                       │   │
+│  │  ┌────▼──────────────────────────────────┐   │   │
+│  │  │        LLM Client (Gemma 4)           │   │   │
+│  │  │  OpenAI 兼容 / 流式+非流式 / Function Call │   │   │
+│  │  └───────────────────────────────────────┘   │   │
+│  │                                              │   │
+│  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌───────────┐  │   │
+│  │  │ MCP  │ │Skill │ │Memory│ │Context     │  │   │
+│  │  │Client│ │System│ │System│ │Compressor  │  │   │
+│  │  └──────┘ └──────┘ └──────┘ └───────────┘  │   │
+│  └──────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+```
+
+**核心设计理念**：
+
+1. **模型无关的 LLM 抽象层**：`llmClient.ts` 通过 `ApiFormat` 区分协议（`openai-compatible` / `anthropic`），Gemma 4 以 `openai-compatible` 格式零侵入接入。新增模型只需在 `providerConfigs.ts` 中声明，无需修改 Agent 核心逻辑
+
+2. **Function Calling 作为一等公民**：整个 Agent 引擎围绕 Native Function Calling 设计——工具定义、调用解析、结果回传均以结构化方式流转，避免基于文本解析的脆弱性
+
+3. **Plan-Execute 双模式**：轻量任务走 ReAct 快速直行，复杂任务由 Plan Agent 先生成结构化计划再分步执行，Agent 引擎自主决策执行策略
+
+4. **上下文与记忆分层管理**：短期记忆（对话历史裁剪 + 上下文压缩）、中期记忆（会话持久化）、长期记忆（记忆文件系统）三层体系，实现跨会话的知识延续
+
+5. **工具生态可扩展**：MCP 协议（HTTP/SSE/stdio）支持接入外部工具服务器，技能系统遵循社区 SKILL.md 规范，子代理支持委派复杂子任务——形成以 Gemma 4 为中枢的可扩展 Agent 工具网络
 
 ---
 
 ## 目录
 
+- [核心代码](#核心代码)
+- [技术报告](#技术报告)
 - [产品简介](#产品简介)
 - [核心功能](#核心功能)
-  - [🤖 AI Agent 智能体](#-ai-agent-智能体)
-  - [📋 Plan-Execute 规划执行](#-plan-execute-规划执行)
-  - [🧩 技能系统](#-技能系统)
-  - [🔌 MCP 工具集成](#-mcp-工具集成)
-  - [🧠 记忆与上下文](#-记忆与上下文)
-  - [👥 子代理协作](#-子代理协作)
-  - [📡 连接器与 IM](#-连接器与-im)
-  - [⏰ 定时任务](#-定时任务)
+    - [🤖 AI Agent 智能体](#-ai-agent-智能体)
+    - [📋 Plan-Execute 规划执行](#-plan-execute-规划执行)
+    - [🧩 技能系统](#-技能系统)
+    - [🔌 MCP 工具集成](#-mcp-工具集成)
+    - [🧠 记忆与上下文](#-记忆与上下文)
+    - [👥 子代理协作](#-子代理协作)
+    - [📡 连接器与 IM](#-连接器与-im)
+    - [⏰ 定时任务](#-定时任务)
 - [技术栈](#技术栈)
 - [目录结构](#目录结构)
 - [环境要求](#环境要求)
@@ -56,27 +190,27 @@
 **核心架构**：`ReAct Agent` + `Plan Agent` + `TaskRunner` 三层架构
 
 - **ReAct Agent**（[`src/agent/core/reactAgent.ts`](src/agent/core/reactAgent.ts)）
-  - 实现标准的 Reason-Act-Observe 循环
-  - 支持流式/非流式 LLM 调用
-  - 支持 DeepSeek 等模型的 reasoning_content 深度思考内容传递
-  - 工具调用支持顺序执行、错误捕获、结果优化
-  - 内置上下文压缩器，长对话自动压缩保持稳定性
-  - 可配置最大迭代次数、历史窗口、流式回调
+    - 实现标准的 Reason-Act-Observe 循环
+    - 支持流式/非流式 LLM 调用
+    - 支持 DeepSeek 等模型的 reasoning_content 深度思考内容传递
+    - 工具调用支持顺序执行、错误捕获、结果优化
+    - 内置上下文压缩器，长对话自动压缩保持稳定性
+    - 可配置最大迭代次数、历史窗口、流式回调
 
 - **Plan Agent**（[`src/agent/core/planAgent.ts`](src/agent/core/planAgent.ts)）
-  - 评估任务复杂度，判断是否需要规划
-  - 生成结构化执行计划（PlanItem 列表）
-  - 支持规划阶段流式输出（thinking + JSON token）
-  - 计划项支持状态追踪（pending / in_progress / completed / failed）
+    - 评估任务复杂度，判断是否需要规划
+    - 生成结构化执行计划（PlanItem 列表）
+    - 支持规划阶段流式输出（thinking + JSON token）
+    - 计划项支持状态追踪（pending / in_progress / completed / failed）
 
 - **TaskRunner**（[`src/agent/core/taskRunner.ts`](src/agent/core/taskRunner.ts)）
-  - 统一管理任务生命周期（启动、运行、完成、终止、暂停）
-  - 支持两种执行模式：`react`（快速直接） / `plan_execute`（先规划后执行）/ `auto`（自动判断）
-  - 内置问题澄清机制（ask_user 工具拦截 + 多选项问答）
-  - 实时事件系统：token / thinking / toolCallStart / toolCallEnd / step / complete / error
-  - 自动加载技能、MCP、连接器、子代理上下文
-  - 上下文优化器（大结果自动缓存到文件，避免上下文爆炸）
-  - 完整的日志系统（任务日志、LLM 调用日志、工具调用日志）
+    - 统一管理任务生命周期（启动、运行、完成、终止、暂停）
+    - 支持两种执行模式：`react`（快速直接） / `plan_execute`（先规划后执行）/ `auto`（自动判断）
+    - 内置问题澄清机制（ask_user 工具拦截 + 多选项问答）
+    - 实时事件系统：token / thinking / toolCallStart / toolCallEnd / step / complete / error
+    - 自动加载技能、MCP、连接器、子代理上下文
+    - 上下文优化器（大结果自动缓存到文件，避免上下文爆炸）
+    - 完整的日志系统（任务日志、LLM 调用日志、工具调用日志）
 
 ### 📋 Plan-Execute 规划执行
 
@@ -102,63 +236,63 @@
 **架构设计**：遵循社区 SKILL.md 规范（agentskills.io）
 
 - **技能加载器**（[`src/agent/skill/skillLoader.ts`](src/agent/skill/skillLoader.ts)）
-  - 扫描三个命名空间：`builtin` / `user` / `ai`
-  - 解析 SKILL.md 文件的 YAML frontmatter
-  - 提取元数据：name、description、version、author、license、tags、platforms、requires
-  - 5 秒缓存机制，避免重复读取文件系统
+    - 扫描三个命名空间：`builtin` / `user` / `ai`
+    - 解析 SKILL.md 文件的 YAML frontmatter
+    - 提取元数据：name、description、version、author、license、tags、platforms、requires
+    - 5 秒缓存机制，避免重复读取文件系统
 
 - **技能管理器**（[`src/agent/skill/skillManager.ts`](src/agent/skill/skillManager.ts)）
-  - 完整的 CRUD 操作：create / patch / edit / write_file / remove_file / delete
-  - **Copy-on-Modify** 保护机制：AI 修改用户技能时自动复制到 ai 命名空间
-  - 安全扫描：阻止危险代码模式（rm -rf、eval、exec 等）
-  - 原子写入 + 备份机制，防止数据丢失
-  - 草稿系统：支持技能开发中的暂存
+    - 完整的 CRUD 操作：create / patch / edit / write_file / remove_file / delete
+    - **Copy-on-Modify** 保护机制：AI 修改用户技能时自动复制到 ai 命名空间
+    - 安全扫描：阻止危险代码模式（rm -rf、eval、exec 等）
+    - 原子写入 + 备份机制，防止数据丢失
+    - 草稿系统：支持技能开发中的暂存
 
 - **技能工具**（[`src/agent/skill/skillTools.ts`](src/agent/skill/skillTools.ts)）
-  - `skill_create` — 创建新技能
-  - `skill_patch` — 修改技能 frontmatter
-  - `skill_edit` — 编辑 SKILL.md 正文
-  - `skill_write_file` — 写入技能资源文件
-  - `skill_remove_file` — 删除技能资源文件
-  - `skill_delete` — 删除整个技能
-  - `skill_load` — 加载技能完整内容供 Agent 使用
+    - `skill_create` — 创建新技能
+    - `skill_patch` — 修改技能 frontmatter
+    - `skill_edit` — 编辑 SKILL.md 正文
+    - `skill_write_file` — 写入技能资源文件
+    - `skill_remove_file` — 删除技能资源文件
+    - `skill_delete` — 删除整个技能
+    - `skill_load` — 加载技能完整内容供 Agent 使用
 
 - **Git 安装**（[`src-tauri/src/skills.rs`](src-tauri/src/skills.rs)）
-  - 支持从 Git 仓库安装社区技能
-  - 自动验证 SKILL.md 有效性
-  - 安装到 `~/.aipcowork/skills/user/` 目录
+    - 支持从 Git 仓库安装社区技能
+    - 自动验证 SKILL.md 有效性
+    - 安装到 `~/.aipcowork/skills/user/` 目录
 
 - **UI 管理**（[`src/views/Skills.vue`](src/views/Skills.vue)）
-  - 三栏分类：内置技能 / 用户安装 / AI 创建
-  - 按标签分类筛选
-  - 实时文件系统同步
+    - 三栏分类：内置技能 / 用户安装 / AI 创建
+    - 按标签分类筛选
+    - 实时文件系统同步
 
 ### 🔌 MCP 工具集成
 
 **MCP 客户端**（[`src/agent/mcp/client.ts`](src/agent/mcp/client.ts)）
 
 - **三种传输协议**：
-  - `HTTP` — 通过 fetch API 调用远程 MCP 服务器
-  - `SSE` — Server-Sent Events 实时通信（自动检测 `/sse` 结尾的 URL）
-  - `stdio` — 通过 Tauri 后端启动本地进程
+    - `HTTP` — 通过 fetch API 调用远程 MCP 服务器
+    - `SSE` — Server-Sent Events 实时通信（自动检测 `/sse` 结尾的 URL）
+    - `stdio` — 通过 Tauri 后端启动本地进程
 
 - **认证支持**：
-  - Bearer Token
-  - API Key（自定义 Header）
-  - Basic Auth
-  - 无认证
+    - Bearer Token
+    - API Key（自定义 Header）
+    - Basic Auth
+    - 无认证
 
 - **连接管理**：
-  - 连接池管理，避免重复连接
-  - 自动初始化（initialize + notifications/initialized）
-  - 连接测试（ping 健康检查）
-  - 错误重试与状态追踪
+    - 连接池管理，避免重复连接
+    - 自动初始化（initialize + notifications/initialized）
+    - 连接测试（ping 健康检查）
+    - 错误重试与状态追踪
 
 - **工具发现与执行**（[`src/agent/mcp/tools.ts`](src/agent/mcp/tools.ts)）
-  - 自动从 MCP 服务器发现可用工具
-  - 转换为 Agent ToolDefinition 格式
-  - 工具名前缀隔离（`{serverName}_{toolName}`）
-  - 实时调用并转换响应格式
+    - 自动从 MCP 服务器发现可用工具
+    - 转换为 Agent ToolDefinition 格式
+    - 工具名前缀隔离（`{serverName}_{toolName}`）
+    - 实时调用并转换响应格式
 
 **支持的 MCP 服务器**：
 - DashScope（通义千问）
@@ -170,47 +304,47 @@
 **记忆系统**（[`src/agent/memory/`](src/agent/memory/)）
 
 - **记忆管理**（[`memoryManager.ts`](src/agent/memory/memoryManager.ts)）
-  - 持久化会话历史到 `~/.aipcowork/sessions/`
-  - 管理上下文文件（任务相关的关键信息）
-  - 支持记忆的增删改查
+    - 持久化会话历史到 `~/.aipcowork/sessions/`
+    - 管理上下文文件（任务相关的关键信息）
+    - 支持记忆的增删改查
 
 - **记忆工具**（[`memoryTools.ts`](src/agent/memory/memoryTools.ts)）
-  - `memory_read` — 读取记忆文件
-  - `memory_write` — 写入记忆文件
-  - `memory_list` — 列出可用记忆
-  - `memory_delete` — 删除过期记忆
+    - `memory_read` — 读取记忆文件
+    - `memory_write` — 写入记忆文件
+    - `memory_list` — 列出可用记忆
+    - `memory_delete` — 删除过期记忆
 
 - **会话管理**（[`src/agent/session/sessionManager.ts`](src/agent/session/sessionManager.ts)）
-  - 会话生命周期管理
-  - 对话历史持久化
-  - 会话恢复与继续
+    - 会话生命周期管理
+    - 对话历史持久化
+    - 会话恢复与继续
 
 - **上下文压缩**（[`src/agent/context/contextCompressor.ts`](src/agent/context/contextCompressor.ts)）
-  - 长对话自动压缩，保持上下文在模型窗口内
-  - 智能保留关键信息（工具调用、重要结论）
-  - 压缩结果缓存到本地
+    - 长对话自动压缩，保持上下文在模型窗口内
+    - 智能保留关键信息（工具调用、重要结论）
+    - 压缩结果缓存到本地
 
 - **上下文优化器**（[`src/agent/context/contextOptimizer.ts`](src/agent/context/contextOptimizer.ts)）
-  - 大工具返回结果自动保存到文件
-  - 在对话中替换为文件引用，节省 token
-  - 阈值可配置（默认 8000 字符）
+    - 大工具返回结果自动保存到文件
+    - 在对话中替换为文件引用，节省 token
+    - 阈值可配置（默认 8000 字符）
 
 ### 👥 子代理协作
 
 **子代理架构**（[`src/agent/subagent/`](src/agent/subagent/)）
 
 - **子代理运行器**（[`subAgentRunner.ts`](src/agent/subagent/subAgentRunner.ts)）
-  - 独立的 ReAct Agent 循环，与主代理隔离
-  - 精简工具集（文件操作 + 命令执行 + 搜索）
-  - 默认最大迭代次数 15（避免子任务失控）
-  - 流式 token 回传到主 UI
-  - 完整的日志追踪（parentTaskId/sub_taskId）
+    - 独立的 ReAct Agent 循环，与主代理隔离
+    - 精简工具集（文件操作 + 命令执行 + 搜索）
+    - 默认最大迭代次数 15（避免子任务失控）
+    - 流式 token 回传到主 UI
+    - 完整的日志追踪（parentTaskId/sub_taskId）
 
 - **子代理工具**（[`subagentTools.ts`](src/agent/subagent/subagentTools.ts)）
-  - `subagent_html_generate` — 委派 HTML 生成任务
-  - `subagent_code_generate` — 委派代码生成任务
-  - 自动构建 SubAgentContext（LLM 配置、流式回调）
-  - 结果自动返回主代理继续执行
+    - `subagent_html_generate` — 委派 HTML 生成任务
+    - `subagent_code_generate` — 委派代码生成任务
+    - 自动构建 SubAgentContext（LLM 配置、流式回调）
+    - 结果自动返回主代理继续执行
 
 **典型应用场景**：
 - 复杂多步骤子任务（读取 → 分析 → 生成 → 写回）
@@ -222,14 +356,14 @@
 **连接器系统**
 
 - **MCP 服务器连接**
-  - 配置界面：[`src/components/settings/ConnectorsSection.vue`](src/components/settings/ConnectorsSection.vue)
-  - 支持多种传输协议与认证方式
-  - 实时连接测试与状态监控
+    - 配置界面：[`src/components/settings/ConnectorsSection.vue`](src/components/settings/ConnectorsSection.vue)
+    - 支持多种传输协议与认证方式
+    - 实时连接测试与状态监控
 
 - **IM 频道集成**（[`src/views/IMChannels.vue`](src/views/IMChannels.vue)）
-  - 配置消息推送通道
-  - 任务完成通知推送
-  - 支持多种 IM 平台（待扩展）
+    - 配置消息推送通道
+    - 任务完成通知推送
+    - 支持多种 IM 平台（待扩展）
 
 **桌面通知**
 - Tauri 原生桌面通知支持
@@ -373,9 +507,9 @@ aipcowork/
 - **npm** ≥ 9 或 **yarn** ≥ 1.22 或 **pnpm** ≥ 8
 - **Rust toolchain** ≥ 1.75（通过 [rustup](https://rustup.rs/) 安装）
 - 平台依赖（按 OS 选择）：
-  - macOS：Xcode Command Line Tools (`xcode-select --install`)
-  - Windows：Microsoft Visual Studio C++ Build Tools + WebView2
-  - Linux：参考 [Tauri 官方依赖列表](https://v2.tauri.app/start/prerequisites/)
+    - macOS：Xcode Command Line Tools (`xcode-select --install`)
+    - Windows：Microsoft Visual Studio C++ Build Tools + WebView2
+    - Linux：参考 [Tauri 官方依赖列表](https://v2.tauri.app/start/prerequisites/)
 
 确认环境：
 
@@ -389,7 +523,7 @@ cargo --version
 
 ```bash
 # 1. 克隆仓库
-git clone https://gitee.com/eastonii/aipcowork.git
+git clone https://github.com/switchII/AIPCoworker.git
 cd aipcowork
 
 # 2. 安装前端依赖
@@ -570,21 +704,21 @@ requires: [dependency-skill]
 - 配置文件：[`src-tauri/tauri.conf.json`](./src-tauri/tauri.conf.json)
 - Rust 源码：`src-tauri/src/`，模块化设计（lib.rs 拆分为多个独立模块）
 - 已启用插件：
-  - `tauri-plugin-dialog`：原生文件 / 目录选择对话框
-  - `tauri-plugin-opener`：调用系统默认应用打开文件 / URL
-  - `tauri-plugin-notification`：桌面通知支持
+    - `tauri-plugin-dialog`：原生文件 / 目录选择对话框
+    - `tauri-plugin-opener`：调用系统默认应用打开文件 / URL
+    - `tauri-plugin-notification`：桌面通知支持
 - **Rust 后端能力**：
-  - 文件系统操作（读写、目录列表、技能加载）
-  - Git 操作（克隆技能仓库）
-  - 技能管理（CRUD、命名空间隔离、frontmatter 解析）
-  - 任务持久化（JSON 序列化）
-  - 记忆文件系统（类似虚拟文件系统）
-  - 定时任务调度（cron 表达式解析）
-  - MCP stdio 进程管理
+    - 文件系统操作（读写、目录列表、技能加载）
+    - Git 操作（克隆技能仓库）
+    - 技能管理（CRUD、命名空间隔离、frontmatter 解析）
+    - 任务持久化（JSON 序列化）
+    - 记忆文件系统（类似虚拟文件系统）
+    - 定时任务调度（cron 表达式解析）
+    - MCP stdio 进程管理
 - **权限模型**：通过 `capabilities/default.json` 声明细粒度权限
-  - 文件系统访问（skills、memory、tasks 目录）
-  - HTTP 请求（MCP HTTP/SSE 连接、LLM API 调用）
-  - 对话框、通知、外部链接打开
+    - 文件系统访问（skills、memory、tasks 目录）
+    - HTTP 请求（MCP HTTP/SSE 连接、LLM API 调用）
+    - 对话框、通知、外部链接打开
 - 默认窗口尺寸 / 图标 / appId 等可在 `tauri.conf.json` 中调整
 - 打包产物路径：`src-tauri/target/release/bundle/`
 
