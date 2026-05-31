@@ -1,0 +1,28 @@
+// ========================================
+// Plan output block — displays plan JSON output in a collapsible shell
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.plan-output-module {
+  // Inherit .thinking-module base, add plan-specific overrides
+}
+
+.plan-icon {
+  color: $color-gray-400;
+
+  &.done {
+    color:$color-gray-800 ; 
+    animation: none;
+  }
+
+  &.failed {
+    color: $color-danger;
+    animation: none;
+  }
+
+  &.spinning {
+    color: $color-gray-800 ; 
+    animation: spin 2s linear infinite;
+  }
+}

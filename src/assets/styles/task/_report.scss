@@ -1,0 +1,57 @@
+// ========================================
+// Round completion divider
+// ========================================
+@use 'variables' as *;
+
+.round-complete-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-3;
+  padding: $sp-6 0;
+  margin: $sp-4 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $color-gray-divider;
+  }
+  &::before { margin-right: 14px; }
+  &::after  { margin-left: 14px; }
+}
+
+.round-divider-text {
+  font-size: $fs-sm;
+  color: $color-gray-50;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.round-divider-time {
+  margin-left: $sp-2;
+  color: $color-gray-100;
+  font-size: $fs-xs;
+}
+
+.round-divider-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  color: $color-gray-100;
+  font-size: $fs-xs;
+  transition: all $transition-fast;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $color-bg-chip;
+    color: $color-gray-600;
+  }
+}

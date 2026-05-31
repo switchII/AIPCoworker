@@ -1,0 +1,98 @@
+// ========================================
+// Complex (multi-step) thinking block
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// =================================================================
+// Complex (multi-step) thinking block
+// =================================================================
+.complex-module .thinking-icon { animation: none; }
+.complex-icon { color: $color-indigo; }
+
+.complex-steps {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-4;
+  margin-top: $sp-2;
+}
+
+.complex-step-item {
+  display: flex;
+  gap: $sp-6;
+  padding: $sp-5 $sp-6;
+  background: $color-white;
+  border: 1px solid $color-bg-subtle;
+  border-left: 3px solid $color-gray-soft;
+  border-radius: $radius-md;
+  transition: all $transition-normal;
+
+  &:hover {
+    box-shadow: $shadow-sm;
+  }
+  &.status-success { border-left-color: $color-success; }
+  &.status-failed {
+    border-left-color: $color-danger;
+    background: $color-danger-bg2;
+  }
+  &.status-running { border-left-color: $color-info; }
+}
+
+.complex-step-index {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: $color-bg-chip;
+  color: $color-gray-400;
+  font-size: $fs-xs;
+  font-weight: 600;
+  @include flex-center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.complex-step-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-2;
+}
+
+.complex-step-head {
+  @include flex-y;
+  gap: $sp-4;
+  flex-wrap: wrap;
+}
+
+.complex-step-type-icon {
+  font-size: $fs-sm;
+  color: $color-indigo;
+  @include step-status-icon-colors;
+}
+
+.complex-step-type {
+  font-size: $fs-sm;
+  font-weight: 600;
+  color: $color-indigo-dark;
+  background: $color-indigo-bg;
+  padding: 1px $sp-4;
+  border-radius: $radius-xs;
+}
+
+.complex-step-target {
+  font-size: $fs-base;
+  color: $color-black;
+  font-weight: 500;
+  font-family: $font-mono;
+  flex: 1;
+  min-width: 0;
+  @include text-truncate;
+}
+
+.complex-step-detail {
+  font-size: $fs-sm;
+  color: $color-gray-400;
+  line-height: $lh-normal;
+  padding-left: $sp-1;
+}

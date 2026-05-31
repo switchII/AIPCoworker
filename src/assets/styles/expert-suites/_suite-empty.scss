@@ -1,0 +1,69 @@
+// ========================================
+// Expert Suites — empty state styles
+// ========================================
+@use 'variables' as *;
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: $sp-8;
+  padding: 60px $sp-10;
+}
+
+.empty-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-3xl;
+  background: $color-bg-page;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $sp-4;
+}
+
+.empty-icon {
+  font-size: 32px;
+  color: $color-gray-soft;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: $fw-semi;
+  color: $color-gray-900;
+}
+
+.empty-desc {
+  font-size: $fs-md;
+  color: $color-gray-300;
+  text-align: center;
+  max-width: 400px;
+  line-height: $lh-loose;
+}
+
+.empty-hints {
+  margin-top: $sp-8;
+}
+
+.hint-item {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+  font-size: $fs-base;
+  color: $color-gray-200;
+}
+
+.hint-icon {
+  color: $color-warning;
+}
+
+.link {
+  color: $color-blue-text;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

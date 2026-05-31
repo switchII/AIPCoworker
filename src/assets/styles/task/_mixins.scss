@@ -1,0 +1,157 @@
+// ========================================
+// Shared mixins for task view
+// ========================================
+@use 'variables' as *;
+
+// Flex center (both axes)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex vertical-center (items centered)
+@mixin flex-y {
+  display: flex;
+  align-items: center;
+}
+
+// Flex horizontal-center
+@mixin flex-x {
+  display: flex;
+  justify-content: center;
+}
+
+// Text truncation with ellipsis
+@mixin text-truncate($max: 100%) {
+  max-width: $max;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Status icon color based on data-status attribute
+@mixin status-icon-colors {
+  &[data-status="success"] { color: $color-success; }
+  &[data-status="failed"]  { color: $color-danger; }
+  &[data-status="running"] { color: $color-info; }
+}
+
+// Step-level status icon: success blends with text, only failed stands out
+@mixin step-status-icon-colors {
+  &[data-status="success"] { color: $color-gray-800; }
+  &[data-status="failed"]  { color: $color-danger; }
+  &[data-status="running"] { color: $color-info; }
+}
+
+// Status icon wrapper (margin auto left + standard size)
+@mixin status-icon {
+  font-size: $fs-md;
+  flex-shrink: 0;
+  @include status-icon-colors;
+}
+
+// Icon button pattern
+@mixin icon-btn($size: 30px, $icon-size: $fs-lg, $radius: $radius-sm) {
+  width: $size;
+  height: $size;
+  border: none;
+  background: transparent;
+  border-radius: $radius;
+  cursor: pointer;
+  @include flex-center;
+  color: $color-gray-500;
+  font-size: $icon-size;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-black;
+  }
+}
+
+// Action button (small inline action button, e.g. copy/download)
+@mixin step-action-btn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $color-gray-400;
+  cursor: pointer;
+  font-size: $fs-sm;
+  transition: color $transition-fast;
+  @include flex-y;
+
+  &:hover { color: $color-gray-800; }
+}
+
+// Dark code-block body
+@mixin code-dark-body {
+  background: $color-black;
+  color: #D4D4D4;
+  border-radius: $radius-md;
+  padding: $sp-5 $sp-6;
+  margin: 0;
+  font-size: $fs-sm;
+  line-height: $lh-loose;
+  font-family: $font-mono;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+
+  code {
+    font-family: inherit;
+    color: inherit;
+  }
+}
+
+// Code dark header (the top bar of a code block)
+@mixin code-dark-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $sp-3 $sp-6;
+  background: #2D2D2D;
+}
+
+// Popover animation (default: fade + translate-y)
+@mixin popover-transition($name: popover, $dy: 4px) {
+  .#{$name}-enter-active {
+    transition: opacity $transition-normal ease, transform $transition-normal ease;
+  }
+  .#{$name}-leave-active {
+    transition: opacity $transition-fast ease, transform $transition-fast ease;
+  }
+  .#{$name}-enter-from,
+  .#{$name}-leave-to {
+    opacity: 0;
+    transform: translateY($dy);
+  }
+}
+
+// Scrollable container
+@mixin scrollable($y: true) {
+  @if $y { overflow-y: auto; overflow-x: hidden; }
+  @else  { overflow-x: auto; overflow-y: hidden; }
+}
+
+// Inline code chip
+@mixin inline-code {
+  background: $color-bg-chip;
+  padding: $sp-1 $sp-3;
+  border-radius: $radius-xs;
+  font-size: $fs-base;
+  font-family: $font-mono;
+  color: $color-black;
+}
+
+// Expand arrow (chevron that rotates)
+@mixin expand-arrow($size: $fs-xs, $color: #9ca3af) {
+  font-size: $size;
+  color: $color;
+  transition: transform $transition-slow;
+
+  &.open { transform: rotate(180deg); }
+}
+
+// Spinner animation
+@keyframes spin { to { transform: rotate(360deg); } }

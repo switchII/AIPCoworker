@@ -1,0 +1,270 @@
+// ========================================
+// Skill card grid and individual card styles
+// ========================================
+@use 'variables' as *;
+
+/* ===== Grid ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: $sp-5;
+}
+
+/* ===== Card ===== */
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  padding: $sp-6;
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-2xl;
+  position: relative;
+  transition: all $transition-fast;
+  cursor: default;
+
+  &:hover {
+    border-color: $color-gray-divider;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+    .install-btn { opacity: 1; }
+  }
+
+  &.installed {
+    .skill-icon-wrap { background: #d1fae5; }
+    .skill-icon       { color: #10b981; }
+  }
+}
+
+/* ===== Card Top Row ===== */
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-4;
+  margin-bottom: $sp-4;
+}
+
+/* ===== Icon ===== */
+.skill-icon-wrap {
+  width: 35px;
+  height: 35px;
+  border-radius: $radius-2xl;
+  background: $color-bg-page;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background $transition-fast;
+}
+
+.skill-icon {
+  font-size: 22px;
+  color: $color-gray-600;
+}
+
+/* ===== Info ===== */
+.skill-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-1;
+  min-width: 0;
+}
+
+.skill-name {
+  font-size: $fs-md;
+  font-weight: $fw-semi;
+  color: $color-black;
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  line-height: 1.3;
+}
+
+.builtin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px $sp-2;
+  background: $color-bg-subtle;
+  color: $color-gray-500;
+  font-size: $fs-2xs;
+  font-weight: $fw-semi;
+  border-radius: $radius-sm;
+  letter-spacing: 0.3px;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px $sp-2;
+  background: rgba(139, 92, 246, 0.15);
+  color: #8b5cf6;
+  font-size: $fs-2xs;
+  font-weight: $fw-semi;
+  border-radius: $radius-sm;
+  letter-spacing: 0.3px;
+}
+
+.installed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $fs-2xs;
+  color: $color-success;
+  font-weight: $fw-semi;
+
+  i {
+    font-size: $fs-2xs;
+  }
+}
+
+.skill-version {
+  font-size: $fs-2xs;
+  color: $color-gray-300;
+  font-weight: $fw-normal;
+}
+
+.skill-desc {
+  font-size: $fs-base;
+  color: $color-gray-400;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: $sp-3;
+}
+
+/* ===== Tags Row ===== */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-2;
+  margin-bottom: $sp-3;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px $sp-3;
+  background: $color-bg-soft;
+  color: $color-gray-500;
+  font-size: $fs-2xs;
+  border-radius: $radius-pill;
+  line-height: 1.6;
+}
+
+/* ===== Card Footer ===== */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: $sp-3;
+  border-top: 0px solid $color-gray-hairline;
+}
+
+.skill-author {
+  font-size: $fs-2xs;
+  color: $color-gray-400;
+  display: flex;
+  align-items: center;
+  gap: $sp-1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
+
+  i { font-size: 9px; }
+}
+
+.install-btn {
+  padding: $sp-1 $sp-4;
+  border: none;
+  border-radius: $radius-md;
+  background: $color-bg-subtle;
+  font-size: $fs-xs;
+  color: $color-gray-600;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all $transition-fast;
+  font-family: inherit;
+  font-weight: $fw-medium;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $color-black;
+    color: $color-white;
+    opacity: 1;
+  }
+
+  &.is-installed {
+    opacity: 1;
+    background: $color-green;
+    color: $color-white;
+
+    &:hover {
+      background: $color-red;
+    }
+  }
+}
+
+/* ===== Builtin Lock ===== */
+.builtin-lock {
+  color: $color-gray-300;
+  font-size: $fs-xs;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* ===== Pagination ===== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-2;
+  margin-top: $sp-16;
+  padding: $sp-8 0;
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 $sp-2;
+  border: 1px solid $color-gray-border;
+  border-radius: $radius-md;
+  background: $color-white;
+  color: $color-gray-600;
+  font-size: $fs-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-subtle;
+    border-color: $color-gray-300;
+  }
+
+  &.active {
+    background: $color-blue;
+    color: $color-white;
+    border-color: $color-blue;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: $fs-xs;
+  }
+}
+
+.page-info {
+  margin-left: $sp-4;
+  font-size: $fs-sm;
+  color: $color-gray-500;
+}
+

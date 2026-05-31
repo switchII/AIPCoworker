@@ -1,0 +1,10 @@
+// ========================================
+// Task view — re-exports shared tokens + page-specific layout
+// ========================================
+@forward '../variables';
+
+// Page-specific layout tokens
+$top-bar-height:   44px;
+$side-panel-width: 280px;
+$chat-max-width:   860px;
+$chat-padding:     24px 28px;

@@ -1,0 +1,22 @@
+// ========================================
+// Execution block styles — aggregator
+// Re-exports all sub-partials for backward compatibility.
+// Individual blocks can be imported directly for tree-shaking:
+//   @use 'task/thinking-shell';
+//   @use 'task/steps';
+//   @use 'task/complex';
+//   @use 'task/code-block';
+//   @use 'task/search-block';
+//   @use 'task/mcp-block';
+//   @use 'task/gen-block';
+//   @use 'task/subagent';
+// ========================================
+@use 'thinking-shell';
+@use 'steps';
+@use 'complex';
+@use 'code-block';
+@use 'search-block';
+@use 'mcp-block';
+@use 'gen-block';
+@use 'subagent';
+@use 'plan-output';

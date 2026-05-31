@@ -1,0 +1,64 @@
+// Dialog styles for agent settings
+.dialog-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-card {
+  background: #FFF;
+  border-radius: 16px;
+  width: 480px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  &.large { width: 580px; }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+
+  h3 { font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0; }
+}
+
+.dialog-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 16px;
+
+  &:hover { background: #F0F0F0; color: #333; }
+}
+
+.dialog-body { padding: 20px 24px; overflow-y: auto; }
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #F0F0F0;
+}
+
+// Transitions
+.fade-enter-active,
+.fade-leave-active { transition: opacity 0.2s; }
+
+.fade-enter-from,
+.fade-leave-to { opacity: 0; }

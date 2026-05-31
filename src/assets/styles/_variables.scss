@@ -1,0 +1,158 @@
+// ========================================
+// Shared design tokens — used by all pages
+// ========================================
+// This file is the single source of truth for colors, typography,
+// spacing, radius, transitions, and shadows across the entire app.
+// Each page's own _variables.scss @forward's this file and adds
+// page-specific layout tokens only.
+// ========================================
+
+// ─── Neutrals ────────────────────────────────────────────────
+$color-black:         #1A1A1A;
+$color-gray-900:      #333;
+$color-gray-800:      #374151;
+$color-gray-700:      #444;
+$color-gray-600:      #555;
+$color-gray-500:      #666;
+$color-gray-400:      #888;
+$color-gray-300:      #999;
+$color-gray-200:      #AAA;
+$color-gray-100:      #BBB;
+$color-gray-light:    #BBB;
+$color-gray-soft:     #CCC;
+$color-gray-border:   #D0D0D0;
+$color-gray-line:     #DDD;
+$color-gray-divider:  #E0E0E0;
+$color-gray-rule:     #E8E8E8;
+$color-gray-hairline: #EAEAEA;
+$color-gray-chip:     #EFEFEF;
+$color-bg-subtle:     #F0F0F0;
+$color-bg-soft:       #F3F3F3;
+$color-bg-page:       #F5F5F5;
+$color-bg-code:       #F7F7F7;
+$color-bg-muted:      #FAFAFA;
+$color-white:         #FFF;
+
+// Task-specific neutrals (used in TaskView)
+$color-gray-50:       #AAA;
+$color-gray-hover:    #EFF1F4;
+$color-bg-panel:      #F5F5F5;
+$color-bg-chip:       #F5F5F5;
+
+// ─── Blues ───────────────────────────────────────────────────
+$color-blue:          #4285F4;
+$color-blue-light:    #EBF5FF;
+$color-blue-border:   #BFDBFE;
+$color-blue-text:     #2563EB;
+$color-blue-dark:     #2563EB;
+$color-blue-sky:      #3b82f6;
+$color-blue-bg:       #f0f9ff;
+$color-blue-bg-deep:  #eff6ff;
+$color-blue-border-dk:#bfdbfe;
+$color-blue-light-2:  #93c5fd;
+
+// ─── Greens ──────────────────────────────────────────────────
+$color-green:         #10b981;
+$color-green-bar:     #86C796;
+$color-green-bg:      #E8F5E9;
+$color-green-bg2:     #f0fdf4;
+$color-green-border:  #d1fae5;
+$color-success:       #10b981;
+$color-success-light: #A7F3D0;
+$color-success-bg:    #ECFDF5;
+$color-success-bg2:   #ecfdf5;
+
+// ─── Purples ─────────────────────────────────────────────────
+$color-purple:        #7C3AED;
+$color-purple-light:  #F3E8FF;
+$color-purple-border: #DDD6FE;
+$color-violet:        #8B5CF6;
+$color-indigo:        #6366F1;
+$color-indigo-dark:   #4F46E5;
+$color-indigo-bg:     #EEF2FF;
+
+// ─── Reds / Dangers ──────────────────────────────────────────
+$color-red:           #ef4444;
+$color-danger:        #ef4444;
+$color-danger-light:  #F87171;
+$color-danger-border: #FECACA;
+$color-danger-bg:     #FEF2F2;
+$color-danger-bg2:    #fef2f2;
+
+// ─── Other accents ───────────────────────────────────────────
+$color-warning:       #F59E0B;
+$color-orange:        #E44D26;
+$color-info:          #3b82f6;
+
+// ─── Typography ──────────────────────────────────────────────
+$font-sans: inherit;
+$font-mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
+
+$fs-2xs:  10px;
+$fs-xs:   11px;
+$fs-sm:   12px;
+$fs-base: 13px;
+$fs-md:   14px;
+$fs-lg:   15px;
+$fs-xl:   16px;
+$fs-2xl:  17px;
+$fs-h3:   20px;
+$fs-h2:   22px;
+$fs-h1:   28px;
+
+$fw-normal:  400;
+$fw-medium:  500;
+$fw-semi:    600;
+
+$lh-tight:  1.4;
+$lh-normal: 1.5;
+$lh-loose:  1.6;
+$lh-text:   1.7;
+$lh-list:   1.8;
+
+// ─── Spacing ─────────────────────────────────────────────────
+$sp-1:  2px;
+$sp-2:  4px;
+$sp-3:  6px;
+$sp-4:  8px;
+$sp-5:  10px;
+$sp-6:  12px;
+$sp-7:  14px;
+$sp-8:  16px;
+$sp-9:  18px;
+$sp-10: 20px;
+$sp-12: 24px;
+$sp-14: 28px;
+$sp-16: 32px;
+$sp-20: 40px;
+
+// ─── Radius ──────────────────────────────────────────────────
+$radius-xs:   3px;
+$radius-sm:   5px;
+$radius-md:   6px;
+$radius-lg:   8px;
+$radius-xl:   10px;
+$radius-2xl:  12px;
+$radius-3xl:  20px;
+$radius-card: 15px;
+$radius-4xl:  18px;
+$radius-pill: 20px;
+
+// ─── Transitions ─────────────────────────────────────────────
+$transition-fast:   0.12s;
+$transition-normal: 0.15s;
+$transition-medium: 0.25s;
+$transition-slow:   0.2s;
+$transition-ease:   0.3s ease;
+
+// ─── Shadows ─────────────────────────────────────────────────
+$shadow-xs:         0 1px 3px rgba(0, 0, 0, 0.04);
+$shadow-sm:         0 1px 6px rgba(0, 0, 0, 0.06);
+$shadow-md:         0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-lg:         0 8px 32px rgba(0, 0, 0, 0.12);
+$shadow-xl:         0 8px 32px rgba(0, 0, 0, 0.1);
+$shadow-xl2:        0 8px 32px rgba(0, 0, 0, 0.12);
+$shadow-perm:       0 20px 60px rgba(0, 0, 0, 0.18);
+$shadow-inset-sm:   0 -1px 0 rgba(0, 0, 0, 0.03) inset;
+$shadow-inset-md:   0 -1px 0 rgba(0, 0, 0, 0.04) inset;
+$shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.04);

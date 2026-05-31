@@ -1,0 +1,53 @@
+// Button styles for agent settings
+.action-bar { margin-bottom: 20px; }
+
+.action-btn {
+  padding: 8px 16px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  background: #FFF;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.12s;
+
+  &:hover { border-color: #CCC; }
+  &.primary { background: #1A1A1A; color: #FFF; border-color: #1A1A1A; }
+  &.primary:hover { background: #333; }
+  &.small { padding: 6px 12px; font-size: 12px; }
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  transition: all 0.12s;
+
+  &:hover { background: #F0F0F0; color: #555; }
+  &.danger:hover { background: #fef2f2; color: #ef4444; }
+}
+
+.save-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #1A1A1A;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 8px;
+
+  &:hover { background: #333; }
+}

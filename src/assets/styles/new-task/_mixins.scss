@@ -1,0 +1,178 @@
+// ========================================
+// Shared mixins for NewTask page
+// ========================================
+@use 'variables' as *;
+
+// Flex center (both axes)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex vertical-center (items aligned)
+@mixin flex-y {
+  display: flex;
+  align-items: center;
+}
+
+// Icon button pattern
+@mixin icon-btn($size: 30px, $icon-size: $fs-md, $radius: $radius-md) {
+  width: $size;
+  height: $size;
+  border: none;
+  background: transparent;
+  border-radius: $radius;
+  cursor: pointer;
+  @include flex-center;
+  color: $color-gray-100;
+  font-size: $icon-size;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-black;
+  }
+}
+
+// Text action button (top-bar)
+@mixin text-action-btn {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-6;
+  border: none;
+  background: transparent;
+  border-radius: $radius-lg;
+  font-size: $fs-base;
+  color: $color-gray-600;
+  cursor: pointer;
+  transition: background $transition-normal;
+  font-family: $font-sans;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-black;
+  }
+
+  i { font-size: $fs-md; }
+}
+
+// Popover base styles (feedback + credits)
+@mixin popover-base {
+  position: absolute;
+  top: calc(100% + $sp-4);
+  right: 0;
+  z-index: 500;
+  background: $color-white;
+  border: 1px solid $color-gray-rule;
+  border-radius: $radius-3xl;
+  box-shadow: $shadow-lg;
+}
+
+// Popover enter/leave transition
+@mixin popover-transition($name: popover, $dy: -6px) {
+  .#{$name}-enter-active {
+    transition: opacity $transition-medium ease, transform $transition-medium ease;
+  }
+  .#{$name}-leave-active {
+    transition: opacity $transition-fast ease, transform $transition-fast ease;
+  }
+  .#{$name}-enter-from,
+  .#{$name}-leave-to {
+    opacity: 0;
+    transform: translateY($dy);
+  }
+}
+
+// Fade transition (used by permission modal)
+@mixin fade-transition($name: fade) {
+  .#{$name}-enter-active { transition: opacity $transition-slow ease; }
+  .#{$name}-leave-active { transition: opacity $transition-normal ease; }
+  .#{$name}-enter-from { opacity: 0; }
+  .#{$name}-leave-to   { opacity: 0; }
+}
+
+// Chip badge (skill / suite)
+@mixin chip-base {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-2 $sp-5;
+  border-radius: $radius-lg;
+  font-size: $fs-sm;
+  font-weight: 500;
+  transition: background $transition-normal;
+
+  i { font-size: $fs-sm; }
+}
+
+@mixin chip-skill {
+  background: $color-blue-light;
+  color: $color-blue-text;
+  border: 1px solid $color-blue-border;
+}
+
+@mixin chip-suite {
+  background: $color-purple-light;
+  color: $color-purple;
+  border: 1px solid $color-purple-border;
+}
+
+@mixin chip-connector {
+  background: $color-green-bg2;
+  color: $color-green;
+  border: 1px solid $color-green-border;
+}
+
+// Chip remove button
+@mixin chip-remove {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity $transition-normal, background $transition-normal;
+  font-size: $fs-2xs;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Input focus ring
+@mixin input-focus {
+  border-color: $color-gray-soft;
+  outline: none;
+}
+
+// Close button (corner X)
+@mixin close-btn($size: 28px) {
+  position: absolute;
+  top: $sp-9;
+  right: $sp-9;
+  width: $size;
+  height: $size;
+  border: none;
+  background: transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  color: $color-gray-100;
+  font-size: $fs-lg;
+  @include flex-center;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-black;
+  }
+}

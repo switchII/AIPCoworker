@@ -1,0 +1,101 @@
+// Profile section styles
+.profile-header {
+  display: flex; align-items: center; gap: 14px; padding: 8px 0;
+}
+
+.profile-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #FFF; font-size: 18px; font-weight: 700;
+}
+
+.profile-name { font-size: 18px; font-weight: 600; color: #1A1A1A; }
+
+.color-picker { padding: 8px 0; }
+
+.color-options {
+  display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent;
+  transition: border-color 0.15s;
+  &.active { border-color: #333; }
+  &:hover { border-color: #999; }
+}
+
+.plan-info {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 4px;
+}
+
+.plan-badge {
+  padding: 4px 12px; border: 1px solid #E8E8E8;
+  border-radius: 8px; font-size: 13px; font-weight: 500;
+}
+
+.plan-link {
+  font-size: 12px; color: #4285F4;
+  cursor: pointer; text-decoration: none;
+}
+
+.logout-btn {
+  padding: 6px 14px; border: 1px solid #fee2e2;
+  border-radius: 8px; background: transparent;
+  color: #ef4444; font-size: 13px; cursor: pointer;
+  font-family: inherit; transition: background 0.15s;
+  &:hover { background: #fef2f2; }
+}
+
+// Permissions styles
+.perm-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid #F5F5F5;
+  &:last-child { border-bottom: none; }
+}
+
+.perm-icon { font-size: 16px; color: #666; margin-top: 2px; width: 20px; text-align: center; }
+
+.perm-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+
+.perm-name { font-size: 13px; font-weight: 500; color: #1A1A1A; }
+
+.perm-status {
+  font-size: 11px; padding: 1px 6px; border-radius: 6px;
+  margin-left: 6px; font-weight: 500;
+  &.granted { background: #d1fae5; color: #059669; }
+  &.pending { background: #fee2e2; color: #dc2626; }
+}
+
+.perm-desc { font-size: 12px; color: #999; }
+
+.perm-btn {
+  padding: 5px 12px; border: 1px solid #E8E8E8;
+  border-radius: 8px; background: #FFF; font-size: 12px;
+  color: #555; cursor: pointer; font-family: inherit;
+  white-space: nowrap; transition: background 0.15s;
+  &:hover { background: #F5F5F5; }
+}
+
+// Shortcuts styles
+.shortcut-group-label {
+  font-size: 12px; color: #999; font-weight: 600; padding: 12px 0 6px;
+}
+
+.shortcut-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #F8F8F8;
+  font-size: 14px; color: #333;
+}
+
+.key-combo {
+  display: flex; align-items: center; gap: 4px;
+  kbd {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px; height: 28px; padding: 0 8px;
+    background: #F5F5F5; border: 1px solid #E8E8E8;
+    border-radius: 6px; font-size: 13px;
+    font-family: inherit; color: #333;
+  }
+}

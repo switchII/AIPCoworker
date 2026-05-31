@@ -1,0 +1,199 @@
+// ========================================
+// Steps list — used inside thinking / complex blocks
+// ========================================
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// =================================================================
+// Steps list (inside thinking / complex blocks)
+// =================================================================
+.steps-list {
+  margin-top: $sp-4;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-3;
+}
+
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-2;
+}
+
+.step-item {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-3 $sp-5;
+  padding-left: 0px;
+  background: $color-bg-muted;
+  border-radius: $radius-sm;
+
+  &.clickable {
+    cursor: pointer;
+    user-select: none;
+    transition: background $transition-fast;
+
+    &:hover { background: $color-gray-hover; }
+  }
+}
+
+.step-expand-arrow {
+  @include expand-arrow(10px, #9CA3AF);
+  margin-left: auto;
+}
+
+// Step result block (dark code block style)
+.step-result-block {
+  margin: $sp-1 0 $sp-2 0;
+  background: $color-black;
+  border-radius: $radius-md;
+  overflow: hidden;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-result-header {
+  @include code-dark-header;
+}
+
+.step-result-label {
+  font-size: $fs-xs;
+  color: $color-gray-100;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.step-result-content {
+  flex: 1;
+  @include scrollable;
+  padding: $sp-5 14px;
+  margin: 0;
+  font-size: $fs-sm;
+  line-height: $lh-loose;
+  font-family: $font-mono;
+  color: #D4D4D4;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  &.is-error { color: $color-danger-light; }
+
+  // 当作为 MarkdownRenderer 使用时，恢复正常的排版样式
+  &.markdown-renderer {
+    font-family: inherit;
+    white-space: normal;
+
+    &.is-error {
+      color: $color-danger-light;
+
+      code { background: rgba($color-danger, 0.15); color: $color-danger-light; }
+    }
+
+    pre {
+      margin: 8px 0;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+// Search items within steps
+.step-result-wrap { margin: $sp-2 0; }
+
+.step-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-3;
+}
+
+.step-search-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-5;
+  padding: $sp-5 $sp-6;
+  background: $color-white;
+  border: 1px solid $color-bg-subtle;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: border-color $transition-fast;
+
+  &:hover { border-color: $color-gray-border; }
+  &.clickable { cursor: pointer; }
+
+  .result-icon {
+    font-size: $fs-xl;
+    flex-shrink: 0;
+    margin-top: $sp-1;
+  }
+  .result-content {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-1;
+    min-width: 0;
+  }
+  .result-title {
+    font-size: $fs-base;
+    font-weight: 500;
+    color: $color-black;
+  }
+  .result-url {
+    font-size: $fs-xs;
+    color: $color-gray-100;
+    @include text-truncate;
+  }
+  .result-summary {
+    font-size: $fs-sm;
+    color: $color-gray-600;
+    line-height: $lh-normal;
+    margin-top: $sp-1;
+  }
+}
+
+.step-status {
+  font-size: $fs-md;
+  flex-shrink: 0;
+  color: $color-gray-400;
+  @include step-status-icon-colors;
+}
+
+.step-code {
+  font-size: $fs-sm;
+  font-family: $font-mono;
+  color: $color-gray-800;
+  background: $color-bg-chip;
+  padding: $sp-1 $sp-3;
+  border-radius: $radius-xs;
+  // 限制宽度，防止长文本挤压其他元素
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.step-text {
+  font-size: $fs-base;
+  color: $color-gray-800;
+}
+
+// =================================================================
+// Step actions (copy / download / popup / preview)
+// =================================================================
+.step-result-actions {
+  @include flex-y;
+  gap: $sp-4;
+}
+
+.step-action-btn {
+  @include step-action-btn;
+  gap: $sp-3;
+  padding: $sp-2;
+
+  i { font-size: $fs-sm; }
+
+  &.preview-btn {
+    color: $color-orange;
+    &:hover { color: color.adjust($color-orange, $lightness: -10%); }
+  }
+}

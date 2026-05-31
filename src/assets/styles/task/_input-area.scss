@@ -1,0 +1,100 @@
+// ========================================
+// Bottom chat input card
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.input-area {
+  padding: $sp-6 $sp-14 $sp-8;
+  max-width: $chat-max-width;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-card {
+  border: 1px solid $color-gray-soft;
+  border-radius: $radius-xl;
+  padding: $sp-5 14px;
+  background: $color-white;
+  transition: border-color $transition-slow;
+
+  &:focus-within { border-color: #CCC; }
+}
+
+.input-textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: $fs-md;
+  font-family: $font-sans;
+  color: $color-black;
+  line-height: $lh-normal;
+  background: transparent;
+
+  &::placeholder { color: $color-gray-light; }
+}
+
+.input-bottom {
+  @include flex-y;
+  justify-content: space-between;
+  margin-top: $sp-3;
+}
+
+.input-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  font-size: $fs-sm;
+  color: $color-gray-100;
+  padding: $sp-2 $sp-4;
+  border-radius: $radius-xs;
+  cursor: pointer;
+
+  &:hover { background: $color-bg-chip; }
+  i { font-size: 9px; }
+}
+
+.input-send-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: $color-gray-soft;
+  border-radius: 50%;
+  cursor: pointer;
+  @include flex-center;
+  color: $color-gray-100;
+  font-size: $fs-base;
+  transition: all $transition-normal;
+
+  &.active {
+    background: $color-black;
+    color: $color-white;
+  }
+}
+
+// 输入按钮容器（停止 + 发送）
+.input-actions {
+  @include flex-y;
+  gap: $sp-3;
+}
+
+// 停止任务按钮（仅在任务运行时显示）
+.input-stop-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: $color-danger-bg;
+  border-radius: 50%;
+  cursor: pointer;
+  @include flex-center;
+  color: $color-danger;
+  font-size: $fs-sm;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $color-danger;
+    color: $color-white;
+  }
+}

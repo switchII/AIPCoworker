@@ -1,0 +1,544 @@
+// ========================================
+// Task Management page — all styles
+// ========================================
+@use 'variables' as *;
+
+// ─── Page container ───────────────────────────────────────────
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: $tm-page-padding;
+  color: $color-black;
+  overflow-y: auto;
+}
+
+// ─── Header ───────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $tm-header-mb;
+  flex-shrink: 0;
+}
+
+.header-left {
+  h1 {
+    font-size: $fs-h2;
+    font-weight: $fw-semi;
+    margin: 0 0 $sp-4 0;
+  }
+}
+
+.subtitle {
+  color: $color-gray-300;
+  font-size: $fs-md;
+  margin: 0;
+}
+
+// ─── Toolbar (search + filter) ─────────────────────────────────
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: $tm-filter-gap;
+  margin-bottom: $sp-8;
+  flex-shrink: 0;
+}
+
+.search-box {
+  position: relative;
+  width: $tm-search-width;
+
+  i {
+    position: absolute;
+    left: $sp-6;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $color-gray-200;
+    font-size: $fs-sm;
+    pointer-events: none;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: $sp-4 $sp-6 $sp-4 $sp-16 * 2;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-lg;
+  font-size: $fs-md;
+  color: $color-black;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: $color-blue;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $color-gray-soft;
+  }
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-4 $sp-8;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-lg;
+  background: $color-white;
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $color-gray-border;
+    color: $color-gray-700;
+  }
+
+  &.active {
+    border-color: $color-black;
+    background: $color-black;
+    color: $color-white;
+  }
+}
+
+.result-count {
+  font-size: $fs-sm;
+  color: $color-gray-300;
+  margin-left: auto;
+}
+
+// ─── Empty state ───────────────────────────────────────────────
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px $sp-10;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: $color-gray-line;
+  margin-bottom: $sp-8;
+}
+
+.empty-title {
+  font-size: $fs-xl;
+  font-weight: $fw-medium;
+  color: $color-gray-500;
+  margin: 0 0 $sp-4;
+}
+
+.empty-desc {
+  font-size: $fs-base;
+  color: $color-gray-300;
+  margin: 0;
+}
+
+// ─── Task table ────────────────────────────────────────────────
+.task-table {
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns:
+    $tm-col-status
+    $tm-col-title
+    $tm-col-input
+    $tm-col-mode
+    $tm-col-skills
+    $tm-col-elapsed
+    $tm-col-time
+    $tm-col-actions;
+  padding: $tm-row-padding;
+  background: #F9F9F9;
+  border-bottom: 1px solid $color-gray-hairline;
+  font-size: $fs-sm;
+  color: $color-gray-300;
+  font-weight: $fw-medium;
+  flex-shrink: 0;
+  gap: $tm-row-gap;
+}
+
+.table-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns:
+    $tm-col-status
+    $tm-col-title
+    $tm-col-input
+    $tm-col-mode
+    $tm-col-skills
+    $tm-col-elapsed
+    $tm-col-time
+    $tm-col-actions;
+  padding: $tm-row-padding;
+  border-bottom: 1px solid #F5F5F5;
+  font-size: $fs-base;
+  align-items: center;
+  transition: background $transition-fast;
+  gap: $tm-row-gap;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $color-bg-muted;
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+// ─── Column cells ──────────────────────────────────────────────
+.col-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-1 $sp-4;
+  border-radius: $radius-pill;
+  font-size: $fs-xs;
+  font-weight: $fw-medium;
+
+  &.running {
+    background: $color-blue-light;
+    color: $color-blue-text;
+  }
+
+  &.completed {
+    background: $color-green-bg;
+    color: $color-success;
+  }
+
+  &.failed {
+    background: $color-danger-bg;
+    color: $color-danger;
+  }
+
+  &.pending {
+    background: $color-bg-subtle;
+    color: $color-gray-400;
+  }
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+
+  &.running {
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.col-title {
+  font-weight: $fw-medium;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $color-black;
+}
+
+.col-input {
+  color: $color-gray-500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: $fs-sm;
+}
+
+.col-mode {
+  .mode-tag {
+    display: inline-block;
+    padding: $sp-1 $sp-4;
+    border-radius: $radius-xs;
+    font-size: $fs-xs;
+    font-family: $font-mono;
+
+    &.react {
+      background: $color-bg-subtle;
+      color: $color-gray-600;
+    }
+
+    &.plan_execute {
+      background: $color-purple-light;
+      color: $color-purple;
+    }
+  }
+}
+
+.col-skills {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  overflow: hidden;
+
+  .skill-chip {
+    flex-shrink: 0;
+    padding: $sp-1 $sp-3;
+    background: $color-bg-subtle;
+    border-radius: $radius-xs;
+    font-size: $fs-xs;
+    color: $color-gray-600;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .skill-more {
+    flex-shrink: 0;
+    font-size: $fs-xs;
+    color: $color-gray-400;
+  }
+}
+
+.col-elapsed {
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  font-family: $font-mono;
+}
+
+.col-time {
+  font-size: $fs-sm;
+  color: $color-gray-300;
+}
+
+.col-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $sp-1;
+}
+
+// ─── Action buttons ────────────────────────────────────────────
+.action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-gray-300;
+  font-size: $fs-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-gray-800;
+  }
+
+  &.danger:hover {
+    background: $color-danger-bg;
+    color: $color-danger;
+  }
+}
+
+// ─── Pagination ────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $sp-6 $sp-8;
+  border-top: 1px solid $color-gray-hairline;
+  flex-shrink: 0;
+  background: $color-white;
+}
+
+.page-info {
+  font-size: $fs-sm;
+  color: $color-gray-400;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+}
+
+.page-btn {
+  min-width: $tm-page-btn-size;
+  height: $tm-page-btn-size;
+  padding: 0 $sp-4;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $tm-page-btn-radius;
+  background: $color-white;
+  font-size: $fs-sm;
+  color: $color-gray-700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    border-color: $color-gray-border;
+    background: $color-bg-muted;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.active {
+    border-color: $color-black;
+    background: $color-black;
+    color: $color-white;
+  }
+}
+
+.page-ellipsis {
+  width: $tm-page-btn-size;
+  text-align: center;
+  color: $color-gray-400;
+  font-size: $fs-sm;
+}
+
+// ─── Confirm dialog ────────────────────────────────────────────
+.dialog-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-dialog {
+  width: 380px;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-xl;
+  padding: $sp-12;
+}
+
+.confirm-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: $color-danger-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $sp-8;
+
+  i {
+    font-size: $fs-h3;
+    color: $color-danger;
+  }
+}
+
+.confirm-title {
+  font-size: $fs-lg;
+  font-weight: $fw-semi;
+  color: $color-black;
+  margin: 0 0 $sp-4;
+}
+
+.confirm-desc {
+  font-size: $fs-md;
+  color: $color-gray-500;
+  margin: 0 0 $sp-12;
+  line-height: $lh-normal;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $sp-5;
+}
+
+.btn-cancel {
+  padding: $sp-4 $sp-8;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-lg;
+  background: $color-white;
+  font-size: $fs-base;
+  color: $color-gray-600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: #F5F5F5;
+  }
+}
+
+.btn-danger {
+  padding: $sp-4 $sp-10;
+  border: none;
+  border-radius: $radius-lg;
+  background: $color-danger;
+  font-size: $fs-base;
+  color: $color-white;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: #dc2626;
+  }
+}
+
+// ─── Transitions ───────────────────────────────────────────────
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.pop-enter-active {
+  transition: all 0.2s ease-out;
+}
+.pop-leave-active {
+  transition: all 0.15s ease-in;
+}
+.pop-enter-from,
+.pop-leave-to {
+  opacity: 0;
+}
+.pop-enter-from .confirm-dialog,
+.pop-leave-to .confirm-dialog {
+  transform: scale(0.95);
+}

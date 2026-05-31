@@ -1,0 +1,184 @@
+// ========================================
+// Skills page layout, header, source tabs, category bar
+// ========================================
+@use 'variables' as *;
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: $sp-16 $sp-20;
+  color: $color-black;
+  overflow-y: auto;
+
+  // 隐藏滚动条
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* ===== Page Header ===== */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $sp-8;
+  margin-bottom: $sp-12;
+
+  h1 {
+    font-size: $fs-h2;
+    font-weight: $fw-semi;
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle {
+    color: $color-gray-400;
+    font-size: $fs-base;
+    margin: $sp-2 0 0;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: $sp-2;
+  }
+}
+
+/* ===== Create Skill Button ===== */
+.create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-6;
+  border: none;
+  border-radius: $radius-lg;
+  background: $color-black;
+  color: $color-white;
+  font-size: $fs-sm;
+  font-weight: $fw-medium;
+  cursor: pointer;
+  transition: all $transition-normal;
+  font-family: inherit;
+
+  &:hover {
+    background: $color-gray-800;
+  }
+
+  i { font-size: $fs-sm; }
+}
+
+/* ===== Source Tabs ===== */
+.source-tabs {
+  display: flex;
+  gap: $sp-2;
+  margin-bottom: $sp-8;
+  background: $color-bg-subtle;
+  border-radius: $radius-lg;
+  padding: $sp-2;
+  width: fit-content;
+}
+
+.source-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-7;
+  border: none;
+  border-radius: $radius-md;
+  background: transparent;
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-family: inherit;
+  font-weight: $fw-medium;
+
+  &:hover {
+    color: $color-gray-700;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &.active {
+    background: $color-white;
+    color: $color-black;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  i { font-size: $fs-sm; }
+}
+
+// Count badge inside source tab
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 $sp-2;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: $fs-xs;
+  font-weight: $fw-semi;
+  line-height: 1;
+  color: $color-gray-500;
+
+  .source-btn.active & {
+    background: $color-bg-subtle;
+    color: $color-gray-700;
+  }
+}
+
+/* ===== Category Bar ===== */
+.category-bar {
+  display: flex;
+  gap: $sp-3;
+  margin-bottom: $sp-10;
+  flex-wrap: wrap;
+}
+
+.cat-btn {
+  padding: $sp-2 $sp-6;
+  border: none;
+  border-radius: $radius-pill;
+  background: transparent;
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-family: inherit;
+  font-weight: $fw-normal;
+
+  &:hover {
+    background: $color-bg-soft;
+    color: $color-gray-700;
+  }
+
+  &.active {
+    background: $color-black;
+    color: $color-white;
+    font-weight: $fw-medium;
+  }
+}
+
+/* ===== Loading / Empty States ===== */
+.state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: $sp-6;
+  color: $color-gray-300;
+  font-size: $fs-md;
+  padding: $sp-20 0;
+
+  i { font-size: 36px; opacity: 0.35; }
+  span { opacity: 0.8; }
+}

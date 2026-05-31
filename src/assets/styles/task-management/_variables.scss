@@ -1,0 +1,28 @@
+// ========================================
+// Task Management — page-specific variables
+// ========================================
+@forward '../variables';
+
+// Layout
+$tm-page-padding:         32px 40px;
+$tm-header-mb:            20px;
+$tm-search-width:         280px;
+$tm-filter-gap:           8px;
+
+// Table columns: status / title / input / mode / skills / elapsed / time / actions
+$tm-col-status:           80px;
+$tm-col-title:            1.4fr;
+$tm-col-input:            2fr;
+$tm-col-mode:             100px;
+$tm-col-skills:           140px;
+$tm-col-elapsed:          90px;
+$tm-col-time:             140px;
+$tm-col-actions:          80px;
+
+// Row
+$tm-row-padding:          12px 16px;
+$tm-row-gap:              8px;
+
+// Pagination
+$tm-page-btn-size:        32px;
+$tm-page-btn-radius:      6px;

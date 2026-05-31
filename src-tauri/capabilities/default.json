@@ -1,0 +1,46 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    {
+      "identifier": "opener:default",
+      "allow": [
+        { "url": "http://**" },
+        { "url": "https://**" },
+        { "url": "file://**" },
+        { "path": "$HOME/**" },
+        { "path": "$DOCUMENT/**" },
+        { "path": "$DOWNLOAD/**" },
+        { "path": "$DESKTOP/**" },
+        { "path": "**" }
+      ]
+    },
+    "deep-link:default",
+    "dialog:default",
+    "notification:default",
+    {
+      "identifier": "http:allow-fetch",
+      "allow": [
+        { "url": "http://**" },
+        { "url": "https://**" }
+      ]
+    },
+    {
+      "identifier": "http:allow-fetch-send",
+      "allow": [
+        { "url": "http://**" },
+        { "url": "https://**" }
+      ]
+    },
+    {
+      "identifier": "http:allow-fetch-read-body",
+      "allow": [
+        { "url": "http://**" },
+        { "url": "https://**" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+// ========================================
+// MCP execute block
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// =================================================================
+// MCP execute block
+// =================================================================
+.mcp-module .thinking-icon { animation: none; }
+.mcp-icon { color: $color-purple; }
+
+.mcp-content {
+  padding: $sp-2 $sp-2 $sp-2 $sp-10;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-5;
+}
+
+.mcp-method,
+.mcp-params,
+.mcp-result {
+  @include flex-y;
+  gap: $sp-4;
+  font-size: $fs-base;
+}
+
+.mcp-label {
+  font-size: $fs-sm;
+  font-weight: 500;
+  color: $color-gray-300;
+  flex-shrink: 0;
+
+  code {
+    margin-left: $sp-3;
+    padding: $sp-1 $sp-4;
+    background: $color-bg-chip;
+    border-radius: $radius-xs;
+    font-size: $fs-sm;
+    font-family: $font-mono;
+    color: $color-black;
+  }
+}
+
+.mcp-result-value {
+  padding: $sp-1 $sp-4;
+  background: $color-success-bg;
+  color: $color-success;
+  border-radius: $radius-xs;
+  font-size: $fs-sm;
+  font-family: $font-mono;
+}
+
+.mcp-result-error {
+  padding: $sp-1 $sp-4;
+  background: $color-danger-bg;
+  color: $color-danger;
+  border-radius: $radius-xs;
+  font-size: $fs-sm;
+  font-family: $font-mono;
+}
+
+.mcp-result-large {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-4;
+}
+
+.mcp-result-toggle {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-4 $sp-6;
+  background: $color-bg-muted;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-gray-hover; }
+}
+
+.mcp-result-summary {
+  font-size: $fs-sm;
+  color: $color-gray-800;
+  flex: 1;
+
+  &.error { color: $color-danger; }
+}

@@ -1,0 +1,57 @@
+// ========================================
+// User message bubble
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.user-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: $sp-12;
+}
+
+.bubble-copy-btn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: $sp-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: $color-gray-300;
+  cursor: pointer;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-chip;
+    color: $color-gray-600;
+  }
+
+  i {
+    font-size: $fs-xs;
+  }
+}
+
+.user-bubble {
+  background: #f5f5f5;
+  border-radius: $radius-2xl ; // $radius-2xl $radius-xs $radius-2xl;
+  padding: $sp-6 $sp-8;
+  max-width: 75%;
+  color: $color-black;
+
+  p {
+    margin: 0;
+    font-size: $fs-md;
+    line-height: $lh-loose;
+  }
+}
+
+.bubble-meta {
+  color: rgba(0, 0, 0, 0.45) !important;
+  font-size: $fs-sm !important;
+  margin-top: $sp-2 !important;
+}

@@ -1,0 +1,315 @@
+// ========================================
+// Clarification block — 问题澄清交互组件
+// 使用 thinking-module 壳 + 系统统一色调
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.clarification-module {
+  margin-bottom: $sp-4;
+  border-radius: $radius-lg;
+  background: $color-white;
+  border: 1.5px solid $color-gray-divider;
+  border-left: 3px solid $color-warning;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+  max-width: 70%;
+  margin-left: 6px;
+  transition: border-color $transition-normal, box-shadow $transition-normal;
+
+  &.answered {
+    border-left-color: $color-success;
+    border-color: $color-gray-hairline;
+    box-shadow: none;
+  }
+}
+
+// ── 头部 ──
+.clarification-header {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-5 $sp-6;
+  background: $color-bg-muted;
+  border-bottom: 1px solid $color-gray-hairline;
+  cursor: default;
+  user-select: none;
+}
+
+.clarification-icon {
+  font-size: $fs-lg;
+  color: $color-warning;
+  animation: pulse-glow 2s ease-in-out infinite;
+
+  &.done {
+    color: $color-success;
+    animation: none;
+  }
+}
+
+.clarification-label {
+  font-size: $fs-md;
+  font-weight: 600;
+  color: $color-gray-900;
+}
+
+.clarification-spinner {
+  font-size: $fs-xs;
+  color: $color-gray-400;
+  margin-left: auto;
+}
+
+.clarification-progress {
+  font-size: $fs-xs;
+  color: $color-gray-500;
+  font-weight: 500;
+  padding: $sp-1 $sp-3;
+  background: $color-bg-chip;
+  border-radius: $radius-3xl;
+  font-family: $font-mono;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+// ── 主体 ──
+.clarification-body {
+  padding: $sp-6 $sp-6;
+}
+
+.clarification-question {
+  margin-bottom: $sp-8;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.question-text {
+  font-size: $fs-md;
+  font-weight: 500;
+  color: $color-gray-900;
+  margin-bottom: $sp-5;
+  line-height: $lh-normal;
+}
+
+.question-number {
+  color: $color-warning;
+  font-weight: 600;
+  margin-right: $sp-2;
+}
+
+.multi-hint {
+  font-size: $fs-xs;
+  color: $color-gray-400;
+  font-weight: 400;
+  margin-left: $sp-2;
+}
+
+// ── 选项 ──
+.question-options {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-3;
+}
+
+.option-item {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-4 $sp-6;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-md;
+  cursor: pointer;
+  user-select: none;
+  transition: all $transition-fast;
+  background: $color-white;
+
+  &:hover:not(.disabled) {
+    border-color: $color-gray-soft;
+    background: $color-bg-chip;
+  }
+
+  &.selected {
+    border-color: $color-gray-800;
+    background: $color-bg-chip;
+  }
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+
+  &.is-custom {
+    border-style: dashed;
+  }
+}
+
+.option-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid $color-gray-border;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  &.is-radio {
+    border-radius: 50%;
+  }
+
+  &.is-checkbox {
+    border-radius: $radius-xs;
+  }
+
+  i {
+    font-size: 8px;
+    color: $color-gray-800;
+  }
+
+  .option-item.selected & {
+    border-color: $color-gray-800;
+    background: $color-bg-chip;
+  }
+}
+
+.option-label {
+  font-size: $fs-base;
+  color: $color-gray-700;
+  line-height: $lh-tight;
+}
+
+// ── 自定义输入 ──
+.custom-input-wrapper {
+  margin-top: $sp-3;
+  padding-left: 28px;
+}
+
+.custom-input {
+  width: 100%;
+  padding: $sp-4 $sp-6;
+  border: 1px solid $color-gray-soft;
+  border-radius: $radius-md;
+  font-size: $fs-base;
+  font-family: $font-sans;
+  color: $color-gray-800;
+  background: $color-bg-muted;
+  outline: none;
+  transition: box-shadow $transition-fast, border-color $transition-fast;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    border-color: $color-gray-800;
+    box-shadow: 0 0 0 2px rgba($color-gray-800, 0.08);
+  }
+}
+
+// ── 已回答结果 ──
+.question-answer {
+  @include flex-y;
+  gap: $sp-3;
+  margin-top: $sp-4;
+  padding: $sp-4 $sp-6;
+  background: $color-bg-chip;
+  border-radius: $radius-md;
+  font-size: $fs-base;
+  color: $color-gray-800;
+}
+
+.answer-check {
+  font-size: $fs-xs;
+  color: $color-success;
+}
+
+// ── 底部按钮 ──
+.clarification-footer {
+  padding: $sp-4 $sp-6 $sp-5;
+  display: flex;
+  justify-content: space-between;
+  gap: $sp-4;
+  border-top: 1px solid $color-gray-hairline;
+  background: $color-bg-muted;
+}
+
+.nav-btn {
+  @include flex-y;
+  gap: $sp-3;
+  padding: $sp-3 $sp-6;
+  background: transparent;
+  color: $color-gray-500;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-md;
+  font-size: $fs-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(.disabled) {
+    border-color: $color-gray-soft;
+    color: $color-gray-800;
+    background: $color-bg-chip;
+  }
+
+  &.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: $fs-2xs;
+  }
+
+  &.next-btn {
+    background: $color-bg-chip;
+    border-color: $color-gray-soft;
+    color: $color-gray-800;
+
+    &:hover:not(.disabled) {
+      background: $color-gray-divider;
+    }
+  }
+}
+
+.submit-btn {
+  @include flex-y;
+  gap: $sp-3;
+  padding: $sp-3 $sp-8;
+  background: $color-gray-800;
+  color: $color-white;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $fs-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(.disabled) {
+    background: $color-gray-900;
+    box-shadow: $shadow-sm;
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: $fs-2xs;
+  }
+}
+
+// ── 动画 ──
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}

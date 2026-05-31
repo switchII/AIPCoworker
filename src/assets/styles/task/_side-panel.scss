@@ -1,0 +1,307 @@
+// ========================================
+// Right side panel (todo, artifacts, skills & MCP, context)
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.side-panel {
+  width: $side-panel-width;
+  min-width: $side-panel-width;
+  background: $color-white;
+  border-radius: $radius-3xl;
+  @include scrollable;
+  transition: width $transition-medium ease, min-width $transition-medium ease, opacity $transition-slow ease;
+}
+
+.side-panel-header {
+  @include flex-y;
+  justify-content: space-between;
+  padding: $sp-6 $sp-8;
+  border-bottom: 1px solid $color-bg-panel;
+}
+
+.side-panel-title {
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-black;
+}
+
+.side-panel-close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  color: $color-gray-100;
+  font-size: $fs-sm;
+  @include flex-center;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $color-bg-panel;
+    color: $color-black;
+  }
+}
+
+.panel-section {
+  border-bottom: 1px solid $color-bg-panel;
+}
+
+.panel-header {
+  @include flex-y;
+  justify-content: space-between;
+  padding: $sp-5 $sp-8;
+  cursor: pointer;
+  user-select: none;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-bg-page; }
+}
+
+.panel-title {
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-gray-800;
+}
+
+.panel-arrow {
+  font-size: $fs-xs;
+  color: $color-gray-100;
+  transition: transform $transition-slow;
+
+  &.collapsed { transform: rotate(-90deg); }
+}
+
+.panel-content {
+  padding: 0 $sp-8 $sp-6;
+}
+
+// Todo
+.todo-item {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-3 0;
+}
+
+.todo-icon {
+  font-size: $fs-md;
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.todo-done {
+  color: $color-gray-600;
+}
+
+.todo-progress {
+  color: $color-blue-text;
+}
+
+.todo-failed {
+  color: $color-danger;
+}
+
+.todo-pending {
+  color: $color-gray-200;
+}
+
+.todo-text {
+  font-size: $fs-base;
+  color: $color-gray-800;
+  line-height: $lh-tight;
+
+  &.todo-text-done {
+    text-decoration: line-through;
+    color: $color-gray-300;
+  }
+}
+
+.todo-count {
+  font-size: $fs-xs;
+  color: $color-gray-300;
+  background: $color-bg-panel;
+  padding: 2px $sp-3;
+  border-radius: $radius-sm;
+  font-weight: 500;
+}
+
+.todo-empty {
+  @include flex-y;
+  flex-direction: column;
+  gap: $sp-3;
+  padding: $sp-6 0;
+  color: $color-gray-300;
+  font-size: $fs-base;
+  text-align: center;
+}
+
+.todo-empty-icon {
+  font-size: 24px;
+  color: $color-gray-200;
+}
+
+// Artifacts
+.artifact-item {
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-3 $sp-4;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-bg-panel; }
+
+  i { font-size: $fs-lg; }
+}
+
+.artifact-name {
+  font-size: $fs-base;
+  color: $color-gray-800;
+}
+
+.artifact-empty {
+  @include flex-y;
+  flex-direction: column;
+  gap: $sp-3;
+  padding: $sp-6 0;
+  color: $color-gray-300;
+  font-size: $fs-base;
+  text-align: center;
+}
+
+.artifact-empty-icon {
+  font-size: 24px;
+  color: $color-gray-200;
+}
+
+// Skills & MCP config info
+.config-info-row {
+  @include flex-y;
+  gap: $sp-3;
+  padding: $sp-3 0;
+  font-size: $fs-base;
+  line-height: $lh-normal;
+
+  &:first-child { padding-top: 0; }
+}
+
+.config-info-label {
+  color: $color-gray-400;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: $fs-base;
+}
+
+.config-info-value {
+  color: $color-gray-700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: $fs-base;
+}
+
+// 打开工作目录按钮
+.config-open-dir-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $color-gray-400;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: $color-gray-700;
+    background: rgba(0, 0, 0, 0.06);
+  }
+}
+
+.config-tag {
+  display: inline;
+  color: $color-gray-700;
+}
+
+.config-empty {
+  color: $color-gray-200;
+  font-style: italic;
+}
+
+// Context window
+.context-token-count {
+  @include flex-y;
+  gap: $sp-3;
+  padding-bottom: $sp-4;
+  font-size: $fs-base;
+}
+
+.context-token-icon {
+  color: $color-blue-text;
+  font-size: $fs-md;
+}
+
+.context-token-label {
+  color: $color-gray-400;
+}
+
+.context-token-value {
+  color: $color-gray-700;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.context-bar-wrapper { padding: $sp-2 0; }
+
+.context-bar {
+  height: 6px;
+  background: $color-bg-chip;
+  border-radius: $radius-sm;
+  overflow: hidden;
+}
+
+.context-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-success, #34d399);
+  border-radius: $radius-sm;
+  transition: width 0.3s;
+}
+
+.context-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: $fs-xs;
+  color: $color-gray-100;
+  margin-top: $sp-2;
+}
+
+// Expand button (visible when panel is collapsed)
+.side-panel-expand-btn {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  margin: $sp-4 0 $sp-4 $sp-4;
+  border-radius: $radius-md;
+  background: $color-white;
+  border: 1px solid $color-gray-line;
+  @include flex-center;
+  cursor: pointer;
+  color: $color-gray-500;
+  font-size: $fs-sm;
+  box-shadow: $shadow-sm;
+  transition: all $transition-normal;
+  align-self: flex-start;
+
+  &:hover {
+    background: $color-bg-panel;
+    color: $color-black;
+  }
+}

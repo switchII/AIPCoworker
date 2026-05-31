@@ -1,0 +1,319 @@
+// ========================================
+// Sub-agent generation UI + copy toast + badges
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// =================================================================
+// Copy toast
+// =================================================================
+.copy-toast {
+  position: fixed;
+  top: $sp-12;
+  left: 50%;
+  transform: translateX(-50%);
+  @include flex-y;
+  gap: $sp-4;
+  padding: $sp-5 $sp-10;
+  background: $color-black;
+  color: $color-white;
+  border-radius: $radius-md;
+  font-size: $fs-base;
+  z-index: 3000;
+  box-shadow: $shadow-lg;
+
+  i { font-size: $fs-md; color: $color-success; }
+}
+
+.toast-fade-enter-active { transition: opacity $transition-medium ease, transform $transition-medium ease; }
+.toast-fade-leave-active { transition: opacity $transition-slow ease, transform $transition-slow ease; }
+.toast-fade-enter-from {
+  opacity: 0;
+  transform: translate(-50%, -8px);
+}
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -8px);
+}
+
+// =================================================================
+// Sub-agent generation UI (progress bar, status messages, badges)
+// =================================================================
+
+// Progress bar for sub-agent generation
+.subagent-progress-bar {
+  height: 0px;
+  background: rgba($color-gray-300, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 0 $sp-3;
+}
+
+.subagent-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-blue, $color-blue-sky);
+  border-radius: 2px;
+  animation: subagent-progress 2s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes subagent-progress {
+  0% { background-position: 100% 0; }
+  50% { background-position: 0 0; }
+  100% { background-position: 100% 0; }
+}
+
+// Status message shown during generation
+.subagent-status-message {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-3 $sp-4;
+  font-size: $fs-base;
+  color: $color-gray-500;
+
+  i {
+    font-size: $fs-md;
+    color: $color-blue;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .gen-filename {
+    font-weight: 600;
+    color: $color-gray-700;
+    background: $color-bg-chip;
+    padding: 2px 6px;
+    border-radius: $radius-xs;
+    margin-left: $sp-1;
+  }
+}
+
+// Wrapper for streaming content during generation
+.subagent-streaming-wrapper {
+  padding-bottom: $sp-2;
+}
+
+// Streaming code display during sub-agent generation
+// Matches code-container / code-block dark theme
+.subagent-streaming-code {
+  margin: 0 $sp-3 $sp-3;
+  border-radius: $radius-md;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+  background: $color-black;
+  color: #D4D4D4;
+  padding: $sp-5 $sp-6;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: $lh-loose;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+
+  code {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  // 流式光标闪烁效果
+  code::after {
+    content: '▍';
+    animation: blink-cursor 0.8s step-end infinite;
+    color: $color-blue;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+  }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// Generating state styling
+.thinking-module.is-generating {
+  .thinking-header {
+    background: rgba($color-blue, 0.04);
+  }
+
+  .thinking-label {
+    color: $color-blue-text;
+    font-weight: 600;
+  }
+}
+
+// Duration badge shown after generation completes
+.generation-duration-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $fs-xs;
+  color: $color-gray-400;
+  background: $color-bg-chip;
+  padding: 2px 8px;
+  border-radius: $radius-xs;
+  margin-left: auto;
+
+  i {
+    font-size: $fs-xs;
+  }
+}
+
+// Language badge for code blocks
+.lang-badge {
+  display: inline-block;
+  font-size: $fs-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $color-gray-500;
+  background: $color-bg-chip;
+  padding: 2px 8px;
+  border-radius: $radius-xs;
+  letter-spacing: 0.5px;
+}
+
+// =================================================================
+// SubAgentBlock (assign_to_subagent) — 子代理执行块
+// =================================================================
+
+.subagent-module {
+  .thinking-icon { animation: none; }
+  .subagent-icon { color: $color-purple; }
+}
+
+.subagent-task {
+  padding: 0;
+  margin-bottom: $sp-3;
+}
+
+// 流式输出区域
+.subagent-streaming-wrapper {
+  padding-bottom: $sp-2;
+}
+
+.subagent-streaming-code {
+  margin: 0 0 $sp-3;
+  border-radius: $radius-md;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+  background: $color-black;
+  color: #D4D4D4;
+  padding: $sp-5 $sp-6;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: $lh-loose;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+
+  code {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  // 流式光标闪烁效果
+  code::after {
+    content: '▍';
+    animation: blink-cursor 0.8s step-end infinite;
+    color: $color-blue;
+  }
+
+  &::-webkit-scrollbar { width: 6px; height: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// Generating state styling
+.thinking-module.is-generating {
+  .thinking-header {
+    background: rgba($color-blue, 0.04);
+  }
+
+  .thinking-label {
+    color: $color-blue-text;
+    font-weight: 600;
+  }
+}
+
+// 最终输出不再需要独立区域，时间线中的 thinking-text 已处理
+
+// 状态提示
+.subagent-status-message {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-3 $sp-4;
+  font-size: $fs-base;
+  color: $color-gray-500;
+
+  i {
+    font-size: $fs-md;
+    color: $color-blue;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+.subagent-status-message.failed {
+  i { color: $color-danger; }
+  color: $color-danger;
+}
+
+// Duration badge
+.thinking-duration {
+  font-size: $fs-xs;
+  color: $color-gray-400;
+  margin-left: $sp-2;
+  &.failed { color: $color-danger; }
+}
+
+// Progress bar
+.subagent-progress-bar {
+  height: 0px;
+  background: rgba($color-gray-300, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 0 $sp-3;
+}
+
+.subagent-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-purple, $color-blue);
+  border-radius: 2px;
+  animation: subagent-progress 2s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes subagent-progress {
+  0% { background-position: 100% 0; }
+  50% { background-position: 0 0; }
+  100% { background-position: 100% 0; }
+}

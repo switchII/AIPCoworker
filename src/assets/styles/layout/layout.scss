@@ -1,0 +1,724 @@
+@use '../variables' as *;
+
+// ========================================
+// Layout — 主布局：侧边栏 + 主内容区
+// ========================================
+
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+// ─── 侧边栏 ──────────────────────────────────────────────────
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  background: $color-bg-page;
+  display: flex;
+  flex-direction: column;
+  border-radius: $radius-2xl;
+  user-select: none;
+  position: relative;
+  transition: width $transition-medium ease, min-width $transition-medium ease, opacity $transition-slow ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 0;
+    min-width: 0;
+    opacity: 0;
+    padding: 0;
+  }
+}
+
+// ─── 品牌区 ──────────────────────────────────────────────────
+.brand-area {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $sp-8;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+}
+
+.logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: $fs-xl;
+  font-weight: $fw-semi;
+  color: $color-black;
+  letter-spacing: 0.5px;
+}
+
+.brand-actions {
+  display: flex;
+  gap: $sp-7;
+}
+
+.ico-fa {
+  font-size: $fs-xl;
+  color: $color-gray-900;
+  cursor: pointer;
+  transition: color $transition-normal;
+
+  &:hover {
+    color: $color-black;
+  }
+}
+
+// ─── 导航 ─────────────────────────────────────────────────────
+.nav-primary {
+  padding: $sp-2 $sp-6;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+  padding: $sp-4 $sp-6;
+  border-radius: $radius-lg;
+  font-size: $fs-md;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: background $transition-normal;
+  margin-bottom: $sp-1;
+
+  &:hover {
+    background: #ECECEC;
+  }
+
+  &.active {
+    background: #E5E5E5;
+    color: $color-black;
+  }
+}
+
+.nav-icon {
+  font-size: $fs-lg;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  flex: 1;
+}
+
+.new-badge {
+  font-size: $fs-xs;
+  color: $color-blue;
+  background: rgba($color-blue, 0.1);
+  padding: 1px $sp-3;
+  border-radius: $sp-2;
+  font-weight: $fw-medium;
+}
+
+// ─── 分隔线 ───────────────────────────────────────────────────
+.divider {
+  height: 1px;
+  background: $color-gray-hairline;
+  margin: $sp-4 $sp-8;
+  flex-shrink: 0;
+}
+
+// ─── 任务区域 ─────────────────────────────────────────────────
+.task-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; // 防止 flex 子元素溢出
+}
+
+.task-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 $sp-4 $sp-4;
+
+  // 隐藏滚动条但保持可滚动
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE 10+
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari/Edge
+  }
+}
+
+.section-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $sp-3 $sp-6;
+  font-size: $fs-xs;
+  color: $color-gray-300;
+  font-weight: $fw-semi;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ico-fa-sm {
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: color $transition-normal;
+
+  &:hover {
+    color: $color-gray-900;
+  }
+}
+
+// ─── 项目组 ───────────────────────────────────────────────────
+.project-group {
+  margin-bottom: $sp-2;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-5;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-size: $fs-base;
+  color: $color-gray-600;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: #ECECEC;
+  }
+}
+
+.project-arrow {
+  font-size: 9px;
+  color: $color-gray-300;
+  transition: transform $transition-slow;
+  width: $sp-6;
+  text-align: center;
+
+  &.open {
+    transform: rotate(90deg);
+  }
+}
+
+.project-folder-icon {
+  font-size: $fs-sm;
+  color: $color-warning;
+}
+
+.project-name {
+  flex: 1;
+  font-weight: $fw-medium;
+  color: $color-gray-900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-count {
+  font-size: $fs-xs;
+  color: $color-gray-300;
+  background: $color-gray-hairline;
+  padding: 1px $sp-3;
+  border-radius: $radius-lg;
+}
+
+.project-tasks {
+  padding-left: $sp-7;
+}
+
+// ─── 任务项 ───────────────────────────────────────────────────
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+  padding: $sp-4 $sp-5;
+  border-radius: $radius-md;
+  font-size: $fs-base;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: #ECECEC;
+  }
+
+  &.active {
+    background: #E5E5E5;
+    color: $color-black;
+  }
+
+  // 导航中状态：点击后立即显示视觉反馈，消除空白等待焦虑
+  &.navigating {
+    opacity: 0.6;
+    pointer-events: none;
+    background: #E5E5E5;
+  }
+
+  &.standalone {
+    padding-left: $sp-6;
+  }
+}
+
+.task-status-completed {
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  flex-shrink: 0;
+}
+
+.task-status-running {
+  width: $sp-6;
+  height: $sp-6;
+  border: 2px solid $color-gray-divider;
+  border-top-color: $color-black;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.task-status-failed {
+  font-size: $fs-sm;
+  color: $color-danger;
+  flex-shrink: 0;
+}
+
+.task-status-pending {
+  font-size: $fs-xs;
+  color: $color-gray-soft;
+  flex-shrink: 0;
+}
+
+// 导航中旋转图标（与 task-status-running 尺寸保持一致防止布局跳动）
+.task-status-navigating {
+  font-size: $fs-sm;
+  color: $color-black;
+  flex-shrink: 0;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.task-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-time {
+  font-size: $fs-xs;
+  color: $color-gray-100;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.task-empty {
+  padding: $sp-10 $sp-6;
+  font-size: $fs-sm;
+  color: $color-gray-soft;
+  text-align: center;
+}
+
+// ─── 底部用户区 ───────────────────────────────────────────────
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: $sp-4 $sp-6 $sp-6;
+  position: relative;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+  padding: $sp-5 $sp-6;
+  border-radius: $radius-xl;
+  cursor: pointer;
+  transition: background $transition-normal;
+
+  &:hover {
+    background: #ECECEC;
+  }
+}
+
+.user-avatar {
+  width: $sp-16;
+  height: $sp-16;
+  border-radius: 50%;
+  background: $color-black;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $fs-md;
+  font-weight: $fw-semi;
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: $fs-base;
+  font-weight: $fw-semi;
+  color: $color-black;
+}
+
+.user-desc {
+  font-size: $fs-xs;
+  color: $color-gray-300;
+}
+
+.user-more {
+  font-size: $fs-md;
+  color: $color-gray-300;
+}
+
+// ─── 用户菜单 ─────────────────────────────────────────────────
+.user-menu {
+  position: absolute;
+  bottom: 72px;
+  left: $sp-6;
+  right: $sp-6;
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-lg;
+  z-index: 200;
+  padding: $sp-3 0;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+  padding: $sp-5 $sp-8;
+  font-size: $fs-base;
+  color: $color-gray-900;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-bg-page;
+  }
+
+  i {
+    width: 16px;
+    text-align: center;
+    font-size: $fs-md;
+    color: $color-gray-500;
+  }
+
+  &.danger {
+    color: $color-danger;
+
+    i {
+      color: $color-danger;
+    }
+  }
+}
+
+.menu-divider {
+  height: 1px;
+  background: $color-bg-subtle;
+  margin: $sp-2 0;
+}
+
+// ─── 用户菜单动画 ─────────────────────────────────────────────
+.pop-enter-active {
+  transition: opacity $transition-normal, transform $transition-normal;
+}
+
+.pop-leave-active {
+  transition: opacity 0.1s, transform 0.1s;
+}
+
+.pop-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.pop-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+// ─── 主内容区 ─────────────────────────────────────────────────
+.main-content {
+  flex: 1;
+  background: $color-bg-muted;
+  overflow-y: auto;
+  position: relative;
+}
+
+// 主内容区浮动侧边栏切换按钮
+.sidebar-toggle-float {
+  position: absolute;
+  top: $sp-6;
+  left: $sp-6;
+  width: $sp-16;
+  height: $sp-16;
+  border-radius: $radius-lg;
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $color-gray-500;
+  font-size: $fs-base;
+  box-shadow: $shadow-xs;
+  transition: all $transition-normal;
+  z-index: 10;
+
+  &:hover {
+    background: $color-bg-page;
+    color: $color-black;
+  }
+}
+
+// ─── 路由级加载遮罩（lazy chunk 下载期间即时反馈）────────────────────
+.route-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 250, 250, 0.85);
+  z-index: 50;
+  backdrop-filter: blur(2px);
+}
+
+.route-loading-spinner {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: $color-white;
+  box-shadow: $shadow-md;
+
+  i {
+    font-size: 18px;
+    color: $color-black;
+  }
+}
+
+// 路由加载遮罩动画（快速淡入，加载完成后快速淡出）
+.route-loading-enter-active {
+  transition: opacity 0.08s ease;
+}
+.route-loading-leave-active {
+  transition: opacity 0.15s ease;
+}
+.route-loading-enter-from,
+.route-loading-leave-to {
+  opacity: 0;
+}
+
+// ─── 帮助文档 Popover ─────────────────────────────────────────
+.help-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: $sp-4;
+  right: $sp-4;
+  width: 220px;
+  max-width: calc(100% - #{$sp-8});
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $radius-2xl;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: $sp-8;
+  z-index: 500;
+}
+
+.help-header {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+  margin-bottom: $sp-4;
+}
+
+.help-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  background: #F0F9F0;
+  border-radius: $radius-lg;
+  padding: $sp-2;
+}
+
+.help-title {
+  font-size: $fs-lg;
+  font-weight: $fw-semi;
+  color: $color-black;
+  margin: 0;
+}
+
+.help-version {
+  font-size: $fs-2xs;
+  color: $color-gray-400;
+}
+
+.help-desc {
+  font-size: $fs-base;
+  color: $color-gray-500;
+  line-height: $lh-loose;
+  margin-bottom: $sp-5;
+}
+
+.help-features {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-4;
+  margin-bottom: $sp-5;
+}
+
+.help-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-4;
+}
+
+.help-feature-icon {
+  width: 28px;
+  height: 28px;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  flex-shrink: 0;
+}
+
+.help-feature-label {
+  display: block;
+  font-size: $fs-base;
+  font-weight: $fw-medium;
+  color: $color-gray-900;
+}
+
+.help-feature-desc {
+  display: block;
+  font-size: $fs-sm;
+  color: $color-gray-400;
+  margin-top: 1px;
+}
+
+.help-divider {
+  height: 1px;
+  background: $color-bg-subtle;
+  margin: $sp-2 0 $sp-4;
+}
+
+.help-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.help-link-item {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-4;
+  border-radius: $radius-lg;
+  font-size: $fs-base;
+  color: $color-gray-700;
+  text-decoration: none;
+  transition: background $transition-fast;
+  cursor: pointer;
+
+  &:hover { background: $color-bg-page; }
+
+  i:first-child {
+    width: 16px;
+    text-align: center;
+    font-size: $fs-base;
+    color: $color-gray-500;
+  }
+
+  span { flex: 1; }
+}
+
+.help-link-arrow {
+  font-size: 10px;
+  color: $color-gray-200;
+}
+
+// 帮助 popover 动画
+.help-pop-enter-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.help-pop-leave-active {
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.help-pop-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.help-pop-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+// ─── 功能开发中 Toast ─────────────────────────────────────────
+.dev-toast {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-4 $sp-6;
+  background: $color-gray-900;
+  color: $color-white;
+  font-size: $fs-sm;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  white-space: nowrap;
+  z-index: 600;
+
+  i {
+    font-size: $fs-base;
+    color: $color-warning;
+  }
+}
+
+// Toast 动画
+.toast-pop-enter-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.toast-pop-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.toast-pop-enter-from {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+.toast-pop-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}

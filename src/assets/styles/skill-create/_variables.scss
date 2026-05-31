@@ -1,0 +1,11 @@
+// ========================================
+// Skill Create page — re-exports shared tokens + page-specific layout
+// ========================================
+@use '../variables' as shared;
+@forward '../variables';
+
+// Page-specific layout tokens
+$page-padding-x:   shared.$sp-20;
+$page-padding-y:   shared.$sp-16;
+$form-max-width:   800px;
+$form-gap:         shared.$sp-8;

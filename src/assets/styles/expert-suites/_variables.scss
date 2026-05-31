@@ -1,0 +1,32 @@
+// ========================================
+// Expert Suites page — re-exports shared tokens + page-specific layout
+// ========================================
+@use '../variables' as shared;
+@forward '../variables';
+
+// Page-specific layout tokens
+$page-padding-x:   shared.$sp-20;
+$page-padding-y:   shared.$sp-16;
+$grid-min-col:     320px;
+$grid-gap:         shared.$sp-10;
+
+// Suite-specific tokens
+$icon-size:        48px;
+$icon-radius:      shared.$radius-2xl;
+$card-padding:     shared.$sp-10;
+$card-radius:      14px;
+$card-gap:         shared.$sp-7;
+
+// State colors (installed)
+$installed-bg:         shared.$color-green-bg2;
+$installed-border:     shared.$color-green-border;
+$installed-icon-bg:    shared.$color-green-border;
+$installed-icon-color: shared.$color-green;
+$installed-badge-bg:   shared.$color-green-border;
+$installed-badge-text: shared.$color-green;
+$installed-tag-bg:     shared.$color-green-border;
+$installed-tag-text:   #059669;
+
+// Action colors
+$delete-hover-color: shared.$color-red;
+$delete-hover-bg:    shared.$color-danger-bg2;

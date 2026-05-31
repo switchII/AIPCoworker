@@ -1,0 +1,156 @@
+// ========================================
+// Task view layout: top-bar, body-area, main-panel, chat scroll
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.task-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $color-white;
+  overflow: hidden;
+}
+
+// Top bar
+.top-bar {
+  height: $top-bar-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $sp-10;
+  flex-shrink: 0;
+}
+
+.top-left {
+  @include flex-y;
+  gap: $sp-6;
+}
+
+.back-btn {
+  @include icon-btn;
+}
+
+.task-title {
+  font-size: $fs-lg;
+  font-weight: 600;
+  color: $color-black;
+}
+
+.task-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  font-size: $fs-sm;
+  color: $color-gray-100;
+  background: $color-bg-soft;
+  padding: $sp-2 $sp-5;
+  border-radius: $radius-xl;
+  font-variant-numeric: tabular-nums;
+
+  &.running {
+    color: $color-success;
+    background: $color-success-bg2;
+  }
+
+  i { font-size: $fs-xs; }
+}
+
+.top-right {
+  display: flex;
+  gap: $sp-2;
+  position: relative;
+}
+
+.top-icon-btn {
+  @include icon-btn($icon-size: $fs-lg);
+}
+
+// Body area
+.body-area {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.main-panel {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: flex 0.3s ease;
+}
+
+.task-view.preview-open .main-panel {
+  flex: 0 0 40%;
+}
+
+.chat-scroll {
+  flex: 1;
+  @include scrollable;
+  padding: $chat-padding;
+  max-width: $chat-max-width;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  // 滚动条默认隐藏，hover 时显示
+  scrollbar-width: thin;                          // Firefox
+  scrollbar-color: transparent transparent;       // Firefox: thumb / track
+
+  &:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+
+  // Webkit browsers
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 0.2s ease;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.35);
+  }
+}
+
+// ========================================
+// 会话加载中遮罩（防止空白渲染）
+// ========================================
+.session-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color-white, 0.88);
+  backdrop-filter: blur(2px);
+}
+
+.session-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-5;
+  color: $color-gray-100;
+  font-size: $fs-sm;
+
+  i {
+    font-size: 24px;
+    color: $color-blue;
+  }
+}

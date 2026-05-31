@@ -1,0 +1,136 @@
+// ========================================
+// Thinking module shell — shared by all block types
+// (thinking, code, search, file-gen, html-render, mcp, complex)
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// =================================================================
+// Thinking module (shared shell)
+// =================================================================
+.thinking-module {
+  margin-bottom: $sp-1;
+  padding-left: 0;
+  border-radius: $radius-sm;
+  transition: background $transition-slow;
+
+  // &.status-failed {
+  //   background: rgba($color-danger, 0.04);
+  // }
+}
+
+.thinking-header {
+  @include flex-y;
+  gap: $sp-4;
+  margin-bottom: 0;
+  padding: $sp-4 $sp-3;
+  border-radius: $radius-sm;
+
+  &.clickable {
+    cursor: pointer;
+    user-select: none;
+    transition: background $transition-fast;
+
+    &:hover { background: $color-bg-chip; }
+  }
+}
+
+.thinking-icon {
+  font-size: $fs-md;
+  color: $color-gray-400;
+
+  &.done {
+    animation: none;
+    color: $color-gray-800;
+  }
+  &.failed {
+    animation: none;
+    color: $color-danger;
+  }
+  &.spinning {
+    animation: spin 2s linear infinite;
+  }
+}
+
+.thinking-label {
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-gray-800;
+}
+
+.thinking-duration {
+  font-size: $fs-xs;
+  padding: $sp-1 $sp-3;
+  background: $color-bg-chip;
+  border-radius: $radius-3xl;
+  color: $color-gray-500;
+  font-family: $font-mono;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+
+  &.failed {
+    background: $color-danger-bg;
+    border-color: $color-danger-border;
+    color: $color-danger;
+  }
+}
+
+.status-icon {
+  margin-left: auto;
+  font-size: $fs-md;
+  @include step-status-icon-colors;
+}
+
+.expand-arrow {
+  @include expand-arrow($fs-xs, #9ca3af);
+  margin-left: $sp-2;
+}
+
+.step-count-badge {
+  font-size: $fs-xs;
+  padding: $sp-1 $sp-4;
+  background: $color-indigo-bg;
+  color: $color-indigo-dark;
+  border-radius: $sp-5;
+  font-weight: 500;
+}
+
+.thinking-body {
+  padding: $sp-2 $sp-2 $sp-6;
+  padding-left: $sp-10;
+}
+
+.thinking-text {
+  font-size: $fs-md;
+  line-height: $lh-loose;
+  color: $color-gray-600;
+  margin: 0 0 $sp-5;
+}
+
+.thinking-list {
+  margin: $sp-4 0;
+  padding-left: $sp-10;
+  font-size: $fs-md;
+  line-height: $lh-list;
+  color: $color-gray-800;
+}
+
+.thinking-sublist {
+  margin: $sp-2 0;
+  padding-left: $sp-8;
+  font-size: $fs-base;
+  color: $color-gray-400;
+  list-style: disc;
+}
+
+.thinking-extra {
+  font-size: $fs-md;
+  line-height: $lh-loose;
+  color: $color-black;
+  margin: $sp-4 0;
+}
+
+.inline-code {
+  @include inline-code;
+}

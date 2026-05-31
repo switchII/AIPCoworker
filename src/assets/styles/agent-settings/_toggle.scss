@@ -1,0 +1,39 @@
+// Toggle switch styles
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.toggle-label { font-size: 13px; color: #999; }
+
+.toggle-switch {
+  width: 42px;
+  height: 24px;
+  background: #DDD;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+
+  &.on { background: #10b981; }
+  &.small { width: 34px; height: 20px; border-radius: 10px; }
+}
+
+.toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: #FFF;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-switch.on .toggle-thumb { transform: translateX(18px); }
+.toggle-switch.small .toggle-thumb { width: 16px; height: 16px; }
+.toggle-switch.small.on .toggle-thumb { transform: translateX(14px); }

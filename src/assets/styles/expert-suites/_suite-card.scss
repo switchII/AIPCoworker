@@ -1,0 +1,160 @@
+// ========================================
+// Expert Suites — suite card styles
+// ========================================
+@use 'variables' as *;
+
+.suite-card {
+  padding: $card-padding;
+  background: $color-white;
+  border: 1px solid $color-gray-hairline;
+  border-radius: $card-radius;
+  transition: border-color $transition-normal, box-shadow $transition-normal;
+  display: flex;
+  flex-direction: column;
+  gap: $card-gap;
+
+  &:hover {
+    border-color: $color-gray-border;
+    box-shadow: $shadow-sm;
+  }
+
+  &.installed {
+    .suite-icon-wrap { background: $installed-icon-bg; }
+    .suite-icon { color: $installed-icon-color; }
+  }
+}
+
+// ── 顶部区域 ──────────────────────────────────────────────
+.suite-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.suite-icon-wrap {
+  width: $icon-size;
+  height: $icon-size;
+  border-radius: $icon-radius;
+  background: $color-bg-page;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suite-icon {
+  font-size: 22px;
+  color: $color-gray-600;
+}
+
+.suite-actions {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+}
+
+// ── 安装/卸载按钮 ─────────────────────────────────────────
+.install-btn {
+  padding: $sp-3 $sp-7;
+  border: 1px solid $color-gray-divider;
+  border-radius: $radius-lg;
+  background: $color-white;
+  font-size: $fs-base;
+  color: $color-gray-600;
+  cursor: pointer;
+  transition: all $transition-normal;
+  font-family: inherit;
+
+  &:hover {
+    background: $color-black;
+    color: $color-white;
+    border-color: $color-black;
+  }
+
+  &.is-installed {
+    background: $color-green;
+    color: $color-white;
+    border-color: $color-green;
+
+    &:hover {
+      background: $color-red;
+      border-color: $color-red;
+    }
+  }
+}
+
+// ── 删除按钮 ──────────────────────────────────────────────
+.delete-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-gray-soft;
+  font-size: $fs-base;
+  transition: all $transition-normal;
+
+  &:hover {
+    color: $delete-hover-color;
+    background: $delete-hover-bg;
+  }
+}
+
+// ── 信息区域 ──────────────────────────────────────────────
+.suite-info {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-3;
+}
+
+.suite-name-row {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+}
+
+.suite-name {
+  font-size: $fs-xl;
+  font-weight: $fw-semi;
+  color: $color-black;
+}
+
+.skill-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-1 $sp-4;
+  background: $color-bg-subtle;
+  border-radius: $radius-xl;
+  font-size: $fs-xs;
+  color: $color-gray-500;
+  font-weight: $fw-medium;
+}
+
+.badge-icon {
+  font-size: $fs-2xs;
+}
+
+.suite-desc {
+  font-size: $fs-base;
+  color: $color-gray-300;
+  line-height: $lh-normal;
+}
+
+// ── 技能标签 ──────────────────────────────────────────────
+.suite-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-3;
+}
+
+.skill-tag {
+  padding: $sp-1 $sp-5;
+  background: $color-bg-page;
+  border-radius: $radius-2xl;
+  font-size: $fs-xs;
+  color: $color-gray-500;
+}

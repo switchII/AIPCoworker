@@ -1,0 +1,201 @@
+// Agent Settings cards and form elements
+.settings-card {
+  background: #FFF;
+  border: 1px solid #EAEAEA;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 16px;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .card-title { margin-bottom: 0; }
+}
+
+// Form elements
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 6px;
+  }
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1A1A1A;
+  background: #FFF;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus { border-color: #4285F4; }
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1A1A1A;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s;
+
+  &:focus { border-color: #4285F4; }
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-group.half { flex: 1; }
+
+.form-hint {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.input-with-action {
+  display: flex;
+  gap: 8px;
+
+  .form-input { flex: 1; }
+}
+
+.input-action-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  background: #FFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  transition: all 0.12s;
+
+  &:hover { border-color: #999; color: #555; }
+}
+
+// Slider
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-slider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #E8E8E8;
+  border-radius: 2px;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #1A1A1A;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.slider-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  min-width: 32px;
+}
+
+// Setting Row
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #F5F5F5;
+
+  &:last-child { border-bottom: none; }
+}
+
+.setting-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-label { font-size: 14px; color: #1A1A1A; font-weight: 500; }
+.setting-hint { font-size: 12px; color: #999; }
+
+// Radio Group
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #E8E8E8;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: #CCC; }
+  &.selected { border-color: #10b981; background: #f0fdf4; }
+  input { margin-top: 3px; }
+}
+
+.radio-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.radio-title { font-size: 14px; font-weight: 500; color: #1A1A1A; }
+.radio-desc { font-size: 12px; color: #999; }
+
+// Empty hint
+.empty-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 16px;
+  color: #BBB;
+
+  i { font-size: 28px; }
+  span { font-size: 14px; }
+}

@@ -1,0 +1,152 @@
+// List styles: skill list, MCP items, diagnostic, capability, generic list items
+
+// Skill list
+.skill-list { display: flex; flex-direction: column; gap: 8px; }
+
+.skill-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #FFF;
+  border: 1px solid #EAEAEA;
+  border-radius: 10px;
+  transition: all 0.12s;
+
+  &:hover { border-color: #CCC; }
+}
+
+.skill-card-left { display: flex; align-items: center; gap: 12px; }
+.skill-info { display: flex; flex-direction: column; gap: 2px; }
+.skill-name { font-size: 14px; font-weight: 500; color: #1A1A1A; }
+.skill-desc { font-size: 12px; color: #999; }
+.skill-card-right { display: flex; align-items: center; gap: 10px; }
+
+.skill-trigger {
+  font-size: 12px;
+  color: #7C3AED;
+  background: #EDE9FE;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.skill-context { font-size: 11px; color: #999; }
+
+// MCP items
+.mcp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #F5F5F5;
+
+  &:last-child { border-bottom: none; }
+}
+
+.mcp-info { display: flex; align-items: center; gap: 10px; }
+.mcp-name { font-size: 14px; font-weight: 500; color: #1A1A1A; }
+.mcp-transport { font-size: 11px; padding: 2px 6px; background: #F3F3F3; border-radius: 4px; color: #666; }
+.mcp-actions { display: flex; align-items: center; gap: 10px; }
+
+// MCP test
+.test-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.test-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #F5F5F5;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) { background: #E8E8E8; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.test-status {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &.success { color: #059669; }
+  &.error { color: #DC2626; }
+}
+
+// Capability list
+.capability-list { display: flex; flex-direction: column; gap: 8px; }
+
+.capability-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #F9F9F9;
+  border-radius: 8px;
+}
+
+.cap-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1A1A1A;
+  font-family: 'SF Mono', monospace;
+  min-width: 100px;
+}
+
+.cap-desc { font-size: 13px; color: #666; }
+
+// Diagnostic list
+.diagnostic-list { display: flex; flex-direction: column; gap: 8px; }
+
+.diagnostic-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #F9F9F9;
+  border-radius: 8px;
+
+  i { font-size: 16px; }
+}
+
+.diag-pass { color: #10b981; }
+.diag-warn { color: #f59e0b; }
+.diag-fail { color: #ef4444; }
+.diag-name { flex: 1; font-size: 14px; color: #1A1A1A; }
+
+.diag-status {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 12px;
+
+  &.pass { background: #d1fae5; color: #059669; }
+  &.warn { background: #fef3c7; color: #d97706; }
+  &.fail { background: #fee2e2; color: #dc2626; }
+}
+
+// Generic list items
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #F5F5F5;
+
+  &:last-child { border-bottom: none; }
+}
+
+.list-item-info { display: flex; flex-direction: column; gap: 2px; }
+.list-item-name { font-size: 14px; font-weight: 500; color: #1A1A1A; }
+.list-item-desc { font-size: 12px; color: #999; }

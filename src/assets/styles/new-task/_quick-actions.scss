@@ -1,0 +1,29 @@
+// ========================================
+// Quick action prompt buttons
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.quick-actions {
+  display: flex;
+  gap: $sp-4;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quick-btn {
+  padding: $sp-4 $sp-8;
+  border: 1px solid $color-gray-divider;
+  border-radius: $radius-pill;
+  background: transparent;
+  font-size: $fs-base;
+  color: $color-gray-600;
+  cursor: pointer;
+  transition: background $transition-normal, border-color $transition-normal;
+  font-family: $font-sans;
+
+  &:hover {
+    background: $color-bg-subtle;
+    border-color: $color-gray-soft;
+  }
+}

@@ -1,0 +1,57 @@
+// ========================================
+// Skill Create page — layout styles
+// ========================================
+@use 'variables' as *;
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding-y $page-padding-x;
+  color: $color-black;
+  overflow-y: auto;
+}
+
+// ── Header ──────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: $sp-8;
+  margin-bottom: $sp-12;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: $color-bg-page;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-gray-600;
+  font-size: 16px;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-black;
+  }
+}
+
+.header-info {
+  flex: 1;
+
+  h1 {
+    font-size: 24px;
+    font-weight: $fw-semi;
+    margin: 0 0 $sp-1 0;
+  }
+
+  .subtitle {
+    color: $color-gray-300;
+    font-size: $fs-md;
+    margin: 0;
+  }
+}

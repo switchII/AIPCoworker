@@ -1,0 +1,10 @@
+// ========================================
+// Skills page — re-exports shared tokens + page-specific layout
+// ========================================
+@use '../variables' as shared;
+@forward '../variables';
+
+// Page-specific layout tokens
+$page-padding-x: shared.$sp-20;
+$page-padding-y: shared.$sp-16;
+$grid-min-col:   280px;

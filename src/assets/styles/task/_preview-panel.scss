@@ -1,0 +1,707 @@
+// ========================================
+// Preview panel + thinking-duration chip
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.preview-panel {
+  width: 100%;
+  border-left: 1px solid $color-bg-subtle;
+  margin-left: $sp-5;
+  background: $color-white;
+  display: flex;
+  border-radius: $radius-3xl;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.preview-header {
+  @include flex-y;
+  justify-content: space-between;
+  padding: $sp-6 $sp-10;
+  border-bottom: 1px solid $color-bg-subtle;
+  flex-shrink: 0;
+}
+
+.preview-title-area {
+  @include flex-y;
+  gap: $sp-5;
+}
+
+.preview-file-name {
+  font-size: $fs-md;
+  font-weight: 600;
+  color: $color-black;
+}
+
+.preview-file-type {
+  font-size: $fs-xs;
+  padding: $sp-1 $sp-4;
+  background: $color-bg-chip;
+  border-radius: $radius-xs;
+  color: $color-gray-500;
+}
+
+.preview-header-actions {
+  @include flex-y;
+  gap: $sp-2;
+}
+
+.preview-action-btn {
+  @include flex-y;
+  gap: $sp-2;
+  padding: $sp-2 $sp-4;
+  border: 1px solid $color-gray-soft;
+  background: $color-white;
+  color: $color-gray-600;
+  cursor: pointer;
+  font-size: $fs-sm;
+  font-family: $font-sans;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  i { font-size: $fs-base; }
+  span { font-size: $fs-xs; }
+
+  &:hover {
+    background: $color-bg-chip;
+    color: $color-black;
+    border-color: $color-gray-border;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.preview-close-btn {
+  @include icon-btn;
+}
+
+.preview-body {
+  flex: 1;
+  @include scrollable;
+  padding: $sp-10;
+}
+
+.preview-html {
+  font-size: $fs-md;
+  line-height: $lh-text;
+  color: $color-black;
+
+  h1 { font-size: $fs-h2; margin-bottom: $sp-6; }
+  h3 { font-size: $fs-h3; margin-bottom: $sp-4; }
+  p { margin-bottom: $sp-4; }
+  ul { padding-left: $sp-10; }
+  li { margin-bottom: $sp-2; }
+}
+
+// Sandboxed HTML preview container (iframe-based)
+.preview-html-sandbox {
+  width: 100%;
+  min-height: 300px;
+  background: $color-white;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  :deep(iframe) {
+    width: 100%;
+    border: none;
+    display: block;
+    min-height: 300px;
+  }
+}
+
+.preview-markdown {
+  font-size: $fs-md;
+  line-height: $lh-text;
+
+  // Let github-markdown-css styles take effect
+  :deep(.markdown-body) {
+    font-size: $fs-md;
+    background: transparent;
+  }
+}
+
+// 代码文件预览（深色背景 + 语法高亮）
+.preview-code {
+  border-radius: $radius-md;
+  overflow: hidden;
+  background: #0d1117;
+
+  :deep(.markdown-body) {
+    background: transparent;
+    padding: $sp-6;
+
+    pre {
+      margin: 0;
+      padding: $sp-6;
+      background: transparent;
+      border: none;
+
+      code {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+.preview-doc {
+  background: $color-bg-muted;
+  border-radius: $radius-md;
+  padding: $sp-10;
+
+  &-content pre {
+    font-family: $font-sans;
+    white-space: pre-wrap;
+    color: $color-gray-800;
+    font-size: $fs-md;
+    line-height: $lh-text;
+    margin: 0;
+  }
+}
+
+// ========================================
+// 文档加载/错误状态
+// ========================================
+.doc-loading,
+.doc-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-4;
+  padding: $sp-16;
+  color: $color-gray-400;
+  font-size: $fs-md;
+
+  i { font-size: 28px; }
+}
+
+.doc-error {
+  color: #dc2626;
+}
+
+// 文档预览容器
+.preview-document {
+  min-height: 200px;
+}
+
+// Fallback：无法应用内预览
+.doc-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-5;
+  padding: $sp-16 $sp-8;
+  text-align: center;
+}
+
+.doc-fallback-icon {
+  font-size: 48px;
+  color: $color-gray-300;
+}
+
+.doc-fallback-text {
+  font-size: $fs-md;
+  color: $color-gray-500;
+  margin: 0;
+}
+
+.doc-fallback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-3 $sp-6;
+  border: 1px solid $color-gray-border;
+  background: $color-white;
+  color: #2563eb;
+  font-size: $fs-sm;
+  font-weight: 500;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #2563eb;
+  }
+}
+
+// ========================================
+// Office 风格文档页面（文本内容包装为 A4 页面效果）
+// ========================================
+.office-page {
+  background: #f0f2f5;
+  padding: $sp-6;
+  border-radius: $radius-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.office-page-inner {
+  width: 100%;
+  max-width: 800px;
+  background: $color-white;
+  padding: 48px 56px;
+  border-radius: 2px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12);
+  min-height: 400px;
+
+  // 文本内容排版
+  :deep(h1) { font-size: 22px; font-weight: 700; margin: 0 0 16px; line-height: 1.3; }
+  :deep(h2) { font-size: 18px; font-weight: 600; margin: 24px 0 12px; line-height: 1.35; }
+  :deep(h3) { font-size: 15px; font-weight: 600; margin: 20px 0 8px; line-height: 1.4; }
+  :deep(p) { margin: 8px 0; line-height: 1.7; }
+  :deep(table) { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  :deep(th), :deep(td) { border: 1px solid #E5E7EB; padding: 8px 14px; font-size: 13px; line-height: 1.5; }
+  :deep(th) { background: #F9FAFB; font-weight: 600; }
+  :deep(img) { max-width: 100%; height: auto; }
+  :deep(ul), :deep(ol) { padding-left: 24px; }
+  :deep(li) { margin: 4px 0; line-height: 1.6; }
+  :deep(pre) { background: #f6f8fa; padding: 12px 16px; border-radius: 6px; font-size: 13px; overflow-x: auto; }
+  :deep(code) { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  :deep(pre code) { background: transparent; padding: 0; }
+  :deep(blockquote) { border-left: 4px solid #dfe2e5; padding: 0 16px; color: #6a737d; margin: 12px 0; }
+
+  // markdown 渲染样式覆盖
+  :deep(.markdown-body) {
+    background: transparent;
+    font-size: 14px;
+  }
+}
+
+// 纯文本排版
+.office-page-inner .preview-doc-content pre {
+  font-family: $font-sans;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: $color-gray-800;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+  background: transparent;
+  padding: 0;
+}
+
+// ========================================
+// vue-office 二进制文件渲染容器
+// ========================================
+.office-binary-wrap {
+  width: 100%;
+  min-height: 400px;
+  background: $color-white;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  // docx-preview 渲染的文档容器
+  :deep(.docx-wrapper) {
+    background: $color-white;
+    padding: 16px;
+  }
+  :deep(.docx-wrapper > section.docx) {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+    padding: 48px 56px;
+  }
+}
+
+// Excel 容器 — 需要固定高度
+.office-binary-excel {
+  height: calc(100vh - 180px);
+  min-height: 500px;
+}
+
+// PDF 容器
+.office-binary-pdf {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+// PPTX 容器（pptx-browser canvas 渲染）
+.office-binary-pptx {
+  background: #f0f2f5;
+  padding: $sp-4;
+  border-radius: $radius-md;
+  min-height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-3;
+}
+
+// 幻灯片导航栏
+.pptx-nav {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  padding: $sp-2 0;
+}
+
+.pptx-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  border: 1px solid $color-gray-border;
+  background: $color-white;
+  color: $color-gray-700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-normal;
+
+  &:hover:not(:disabled) {
+    background: $color-gray-hover;
+    border-color: $color-blue;
+    color: $color-blue;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.pptx-nav-counter {
+  font-size: $fs-sm;
+  color: $color-gray-600;
+  min-width: 50px;
+  text-align: center;
+}
+
+// Canvas 包裹层
+.pptx-canvas-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;  // 防止 canvas 溢出
+}
+
+.pptx-canvas {
+  // 不设任何 width/height/max-width CSS
+  // pptx-browser 通过 canvas attribute 设置像素尺寸
+  // JS 渲染后同步设置 style.width/height 保持比例
+  border-radius: $radius-sm;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  background: $color-white;
+}
+
+// ========================================
+// DOCX 文档预览（文本模式的排版）
+// ========================================
+.preview-docx {
+  min-height: 200px;
+}
+
+.docx-content {
+  font-family: $font-sans;
+  font-size: 14px;
+  line-height: 1.7;
+  color: $color-gray-800;
+
+  :deep(h1) { font-size: 22px; font-weight: 700; margin: 0 0 12px; }
+  :deep(h2) { font-size: 18px; font-weight: 600; margin: 20px 0 8px; }
+  :deep(h3) { font-size: 15px; font-weight: 600; margin: 16px 0 6px; }
+  :deep(p) { margin: 8px 0; }
+  :deep(table) { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  :deep(th), :deep(td) { border: 1px solid #E5E7EB; padding: 6px 12px; font-size: 13px; }
+  :deep(th) { background: #F9FAFB; font-weight: 600; }
+  :deep(img) { max-width: 100%; height: auto; }
+  :deep(ul), :deep(ol) { padding-left: 24px; }
+  :deep(li) { margin: 4px 0; }
+}
+
+// ========================================
+// Excel 表格预览（仅用于非二进制场景的备用样式）
+// ========================================
+.preview-excel {
+  min-height: 200px;
+}
+
+// ========================================
+// PPTX 演示文稿预览（仅用于文本模式的备用样式）
+// ========================================
+.preview-pptx {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-5;
+  min-height: 200px;
+}
+
+.pptx-slide {
+  background: $color-white;
+  border: 1px solid $color-bg-subtle;
+  border-radius: $radius-md;
+  padding: $sp-6 $sp-8;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.pptx-slide-number {
+  display: inline-block;
+  font-size: $fs-xs;
+  color: $color-gray-400;
+  background: $color-bg-chip;
+  padding: $sp-1 $sp-3;
+  border-radius: $radius-xs;
+  margin-bottom: $sp-2;
+}
+
+.pptx-slide-title {
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-black;
+  margin-bottom: $sp-3;
+}
+
+.pptx-slide-texts {
+  margin: 0;
+  padding-left: $sp-6;
+  font-size: $fs-sm;
+  color: $color-gray-600;
+  line-height: $lh-text;
+
+  li { margin: $sp-1 0; }
+}
+
+// ========================================
+// PDF 文档预览（仅用于文本模式的排版）
+// ========================================
+.preview-pdf {
+  min-height: 200px;
+}
+
+// ========================================
+// 图片预览
+// ========================================
+.preview-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-6;
+  height: 100%;
+}
+
+.image-loading,
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-4;
+  padding: $sp-16;
+  color: $color-gray-400;
+  font-size: $fs-md;
+
+  i { font-size: 28px; }
+}
+
+.image-error {
+  color: #dc2626;
+}
+
+// 画廊导航
+.gallery-nav-top {
+  display: flex;
+  align-items: center;
+  gap: $sp-5;
+  width: 100%;
+  justify-content: center;
+  padding: $sp-2 0;
+}
+
+.gallery-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid $color-gray-soft;
+  border-radius: $radius-sm;
+  background: $color-white;
+  color: $color-gray-600;
+  cursor: pointer;
+  font-size: $fs-base;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-chip;
+    color: $color-black;
+    border-color: $color-gray-border;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.gallery-counter {
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+  text-align: center;
+}
+
+// 图片容器
+.image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  cursor: zoom-in;
+  border-radius: $radius-md;
+  overflow: hidden;
+  background: $color-bg-muted;
+  border: 1px solid $color-bg-subtle;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.image-zoom-hint {
+  position: absolute;
+  bottom: $sp-4;
+  right: $sp-4;
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-2 $sp-4;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: $fs-xs;
+  border-radius: $radius-sm;
+  opacity: 0;
+  transition: opacity $transition-fast;
+  pointer-events: none;
+
+  i { font-size: $fs-sm; }
+}
+
+.image-container:hover .image-zoom-hint {
+  opacity: 1;
+}
+
+// ========================================
+// 图片灯箱（Lightbox）
+// ========================================
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: $sp-6;
+  right: $sp-6;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $transition-fast;
+  z-index: 10;
+
+  &:hover { background: rgba(255, 255, 255, 0.22); }
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $transition-fast;
+  z-index: 10;
+
+  &:hover:not(:disabled) { background: rgba(255, 255, 255, 0.22); }
+  &:disabled { opacity: 0.25; cursor: not-allowed; }
+}
+
+.lightbox-nav-prev { left: $sp-8; }
+.lightbox-nav-next { right: $sp-8; }
+
+.lightbox-counter {
+  position: absolute;
+  top: $sp-6;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: $fs-sm;
+  font-variant-numeric: tabular-nums;
+  z-index: 10;
+}
+
+.lightbox-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 92vw;
+  max-height: 82vh;
+}
+
+.lightbox-img {
+  max-width: 92vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: $radius-md;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-filename {
+  position: absolute;
+  bottom: $sp-8;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: $fs-sm;
+  max-width: 80vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Lightbox transition
+.lightbox-fade-enter-active,
+.lightbox-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to {
+  opacity: 0;
+}
+

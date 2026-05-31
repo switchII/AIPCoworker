@@ -1,0 +1,224 @@
+// ========================================
+// Workspace permission modal dialog
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.perm-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: $sp-10;
+}
+
+.perm-dialog {
+  width: 440px;
+  max-width: 90vw;
+  background: $color-white;
+  border-radius: $radius-4xl;
+  padding: $sp-14;
+  position: relative;
+  box-shadow: $shadow-perm;
+}
+
+.perm-close {
+  @include close-btn;
+}
+
+.perm-header {
+  display: flex;
+  align-items: center;
+  gap: $sp-7;
+  margin-bottom: $sp-10;
+}
+
+.perm-icon-box {
+  width: 44px;
+  height: 44px;
+  background: $color-bg-subtle;
+  border-radius: $radius-2xl;
+  @include flex-center;
+  flex-shrink: 0;
+}
+
+.perm-folder-icon {
+  font-size: $fs-h3;
+  color: $color-gray-500;
+}
+
+.perm-title {
+  font-size: $fs-2xl;
+  font-weight: 600;
+  color: $color-black;
+  margin: 0;
+}
+
+.perm-subtitle {
+  font-size: $fs-base;
+  color: $color-gray-400;
+  margin: $sp-1 0 0;
+}
+
+.perm-path-box {
+  background: $color-bg-code;
+  border: 1px solid $color-gray-chip;
+  border-radius: $radius-xl;
+  padding: $fs-xs $sp-7;
+  margin-bottom: $sp-9;
+}
+
+.perm-path {
+  font-size: $fs-base;
+  color: $color-gray-600;
+  word-break: break-all;
+  display: block;
+  font-family: $font-mono;
+  line-height: $lh-normal;
+}
+
+.perm-section {
+  margin-bottom: $sp-8;
+}
+
+.perm-section-title {
+  display: block;
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-black;
+  margin-bottom: $sp-5;
+}
+
+.perm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-4;
+}
+
+.perm-list li {
+  display: flex;
+  align-items: center;
+  gap: $sp-4;
+  font-size: $fs-base;
+  color: $color-gray-700;
+}
+
+.perm-dot {
+  width: $sp-4;
+  height: $sp-4;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: $color-gray-soft;
+}
+
+.perm-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-4;
+  background: $color-bg-page;
+  border: 1px solid $color-gray-rule;
+  border-radius: $radius-xl;
+  padding: $sp-6 $sp-7;
+  margin-bottom: $sp-9;
+}
+
+.perm-warn-icon {
+  font-size: $fs-md;
+  color: $color-gray-100;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.perm-warning span {
+  font-size: $fs-sm;
+  color: $color-gray-500;
+  line-height: $lh-normal;
+}
+
+.perm-duration {
+  margin-bottom: $sp-10;
+}
+
+.perm-duration-label {
+  display: block;
+  font-size: $fs-sm;
+  color: $color-gray-100;
+  margin-bottom: $sp-4;
+}
+
+.perm-duration-options {
+  display: flex;
+  gap: 0;
+}
+
+.perm-dur-btn {
+  flex: 1;
+  height: 42px;
+  border: 1px solid $color-gray-rule;
+  background: $color-white;
+  font-size: $fs-base;
+  color: $color-gray-500;
+  cursor: pointer;
+  font-family: $font-sans;
+  transition: all $transition-fast;
+
+  &:first-child { border-radius: $radius-xl 0 0 $radius-xl; }
+  &:last-child  { border-radius: 0 $radius-xl $radius-xl 0; }
+  &:not(:first-child) { border-left: none; }
+
+  &.active {
+    background: $color-black;
+    color: $color-white;
+    border-color: $color-black;
+
+    + .perm-dur-btn {
+      border-left-color: $color-black;
+    }
+  }
+}
+
+.perm-actions {
+  display: flex;
+  gap: $sp-6;
+}
+
+.perm-btn-deny {
+  flex: 1;
+  height: 42px;
+  border: 1px solid $color-gray-divider;
+  background: $color-white;
+  border-radius: $radius-xl;
+  font-size: $fs-md;
+  font-weight: 500;
+  color: $color-black;
+  cursor: pointer;
+  font-family: $font-sans;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-bg-page; }
+}
+
+.perm-btn-allow {
+  flex: 2;
+  height: 42px;
+  border: none;
+  background: $color-black;
+  border-radius: $radius-xl;
+  font-size: $fs-md;
+  font-weight: 500;
+  color: $color-white;
+  cursor: pointer;
+  font-family: $font-sans;
+  transition: background $transition-fast;
+
+  &:hover { background: $color-gray-900; }
+}
+
+/* 权限弹窗淡入淡出动画 */
+@include fade-transition(fade);

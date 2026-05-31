@@ -1,0 +1,176 @@
+// ========================================
+// Input card: container, textarea, footer, chips, send button
+// ========================================
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.input-container {
+  width: 100%;
+  margin-bottom: $sp-8;
+}
+
+.input-card {
+  background: $color-white;
+  border: 1px solid $color-gray-rule;
+  border-radius: $radius-card;
+  box-shadow: $shadow-xs;
+  transition: border-color $transition-slow, box-shadow $transition-slow;
+  overflow: visible;
+
+  &:focus-within {
+    border-color: $color-gray-soft;
+    box-shadow: $shadow-sm;
+  }
+}
+
+/* -- 输入框 -- */
+.main-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: $fs-lg;
+  font-family: $font-sans;
+  color: $color-black;
+  line-height: $lh-loose;
+  min-height: 100px;
+  padding: $sp-9 $sp-10 $sp-5;
+  background: transparent;
+  border-radius: $radius-card $radius-card 0 0;
+
+  &::placeholder {
+    color: $color-gray-light;
+  }
+}
+
+/* -- 底部工具栏 -- */
+.input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $sp-4 $sp-7 $sp-6;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  position: relative;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: $sp-1;
+}
+
+/* 工具按钮 */
+.tool-btn {
+  @include icon-btn;
+
+  &.has-badge {
+    position: relative;
+  }
+}
+
+.inline-badge {
+  position: absolute;
+  top: -1px;
+  right: -4px;
+  font-size: $fs-2xs;
+  color: $color-blue;
+  background: rgba(66, 133, 244, 0.1);
+  padding: 1px $sp-2;
+  border-radius: $radius-xs;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* 发送按钮 */
+.send-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: $color-gray-rule;
+  border-radius: 50%;
+  cursor: pointer;
+  @include flex-center;
+  color: $color-gray-100;
+  font-size: $fs-base;
+  transition: background $transition-normal, color $transition-normal;
+
+  &:hover:not(:disabled) {
+    background: $color-gray-border;
+    color: $color-black;
+  }
+
+  &.active {
+    background: $color-black;
+    color: $color-white;
+  }
+
+  // 提交中状态：显示加载动画，禁用交互
+  &.submitting {
+    background: $color-blue;
+    color: $color-white;
+    cursor: wait;
+    pointer-events: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+  }
+}
+
+/* ===== 已选 Chip 展示区（放在 input-card 上方，卡片样式） ===== */
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-4;
+  padding: 10px;
+  background: $color-white;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  border: 1px solid #e8e8e8;
+  animation: chipFadeIn $transition-slow ease;
+}
+
+@keyframes chipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chip {
+  @include chip-base;
+
+  @at-root {
+    .chip-skill {
+      @include chip-base;
+      @include chip-skill;
+      border: 0;
+    }
+
+    .chip-suite {
+      @include chip-base;
+      @include chip-suite;
+      border: 0;
+    }
+
+    .chip-connector {
+      @include chip-base;
+      @include chip-connector;
+      border: 0;
+    }
+  }
+}
+
+.chip-remove {
+  @include chip-remove;
+}

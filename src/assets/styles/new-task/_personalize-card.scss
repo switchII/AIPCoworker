@@ -1,0 +1,59 @@
+// ========================================
+// Bottom personalize card
+// ========================================
+@use 'variables' as *;
+@use 'sass:color';
+
+.personalize-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $color-gray-chip;
+  border-radius: $radius-2xl;
+  padding: $sp-7 $sp-10;
+  margin: 0 auto;
+  max-width: $card-max-width;
+  width: 100%;
+  box-shadow: $shadow-xs;
+  cursor: pointer;
+  transition: background $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    background: color.adjust($color-gray-chip, $lightness: -3%);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.card-left {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-1;
+}
+
+.card-title {
+  font-size: $fs-md;
+  font-weight: 500;
+  color: $color-black;
+}
+
+.card-desc {
+  font-size: $fs-sm;
+  color: $color-gray-100;
+}
+
+.card-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.card-arrow {
+  font-size: $fs-sm;
+  color: $color-gray-100;
+  transition: transform $transition-normal;
+
+  .personalize-card:hover & {
+    transform: translateX(3px);
+    color: $color-black;
+  }
+}

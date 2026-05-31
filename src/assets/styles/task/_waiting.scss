@@ -1,0 +1,138 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* ===== 任务等待区 ===== */
+.waiting-area {
+  padding: 0 28px 0;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.waiting-bubble {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FAFAFA;
+  border: 1px solid #E8E8E8;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.03) inset,
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  cursor: default;
+  margin-bottom: 6px;
+
+  &:hover {
+    border-color: #DDD;
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.04) inset,
+      0 3px 12px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.waiting-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #EEEEEE;
+  @include flex-center;
+  flex-shrink: 0;
+
+  i { font-size: 16px; color: #999; }
+}
+
+.waiting-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.waiting-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #888;
+  letter-spacing: 0.3px;
+}
+
+.waiting-text {
+  font-size: 14px;
+  color: #1A1A1A;
+  line-height: 1.4;
+  @include text-truncate;
+}
+
+.waiting-arrow {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  @include flex-center;
+  color: #AAA;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover { background: #E8E8E8; color: #555; }
+
+  i {
+    font-size: 13px;
+    transition: transform 0.25s ease;
+    &.rotated { transform: rotate(180deg); }
+  }
+}
+
+.waiting-dropdown {
+  position: absolute;
+  top: calc(100% - 6px);
+  right: 28px;
+  min-width: 220px;
+  background: #FFF;
+  border: 1px solid #EAEAEA;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  padding: 4px 0;
+  overflow: hidden;
+}
+
+.waiting-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #E53935;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-family: inherit;
+  text-align: left;
+
+  &:hover { background: #FFF5F5; }
+
+  i { font-size: 13px; width: 16px; text-align: center; flex-shrink: 0; }
+}
+
+/* 等待气泡出入动画 */
+.waiting-bubble-enter-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.waiting-bubble-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.waiting-bubble-enter-from {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.waiting-bubble-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}

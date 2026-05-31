@@ -1,0 +1,80 @@
+// MCP / Connectors section styles
+.mcp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+  h2 { font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0; }
+}
+
+.add-mcp-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; background: #1A1A1A; color: #FFF;
+  border: none; border-radius: 8px; font-size: 13px;
+  cursor: pointer; font-family: inherit; transition: background 0.15s;
+  &:hover { background: #333; }
+}
+
+.mcp-empty {
+  text-align: center; padding: 60px 20px; color: #999;
+  i { font-size: 48px; margin-bottom: 12px; display: block; color: #CCC; }
+  p { margin: 0; font-size: 14px; }
+}
+
+.mcp-list { display: flex; flex-direction: column; gap: 12px; }
+
+.mcp-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px; background: #FFF;
+  border: 1px solid #EAEAEA; border-radius: 12px;
+  transition: border-color 0.15s;
+  &:hover { border-color: #DDD; }
+}
+
+.mcp-card-info {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+
+.mcp-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: #F5F5F5; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 18px; color: #555; flex-shrink: 0;
+}
+
+.mcp-details {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+.mcp-name { font-size: 14px; font-weight: 500; color: #1A1A1A; }
+
+.mcp-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #999;
+}
+
+.mcp-transport {
+  padding: 2px 6px; background: #F0F0F0;
+  border-radius: 4px; font-weight: 500; font-size: 11px;
+}
+
+.mcp-command,
+.mcp-url {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.mcp-card-actions { display: flex; align-items: center; gap: 8px; }
+
+.test-btn,
+.delete-btn {
+  width: 32px; height: 32px; border: none;
+  background: transparent; cursor: pointer;
+  color: #999; font-size: 14px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+
+.test-btn:hover { background: #F0F0F0; color: #333; }
+.delete-btn:hover { background: #FEE2E2; color: #EF4444; }
+
+// MCP dialog specific
+.mcp-dialog { max-width: 600px; }

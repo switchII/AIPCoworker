@@ -1,0 +1,11 @@
+// ========================================
+// NewTask page — re-exports shared tokens + page-specific layout
+// ========================================
+@use '../variables' as shared;
+@forward '../variables';
+
+// Page-specific layout tokens
+$page-padding-x:  shared.$sp-20;
+$page-padding-y:  shared.$sp-10;
+$center-max-width: 760px;
+$card-max-width:   560px;

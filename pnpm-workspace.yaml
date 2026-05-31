@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': false
+  '@vue-office/docx': true
+  '@vue-office/excel': true
+  '@vue-office/pdf': true
+  '@vue-office/pptx': true
+  core-js: false
+  esbuild: false
+  vue-demi: false
