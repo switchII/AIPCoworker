@@ -88,6 +88,59 @@ export interface ToolCall {
 | **消费级 GPU 可运行** | Gemma 4 提供多种参数规模，在消费级 GPU（单卡 RTX 4090 24GB）上即可流畅运行，无需昂贵的服务器级硬件。这降低了企业部署门槛，使 AI 能力可以下沉到个人工作站 |
 | **企业私有化部署，不出域** | Gemma 4 作为开源模型，支持完全私有化部署。企业可在内部服务器或个人工作站上独立运行，模型权重、推理过程、用户数据全程不离开企业内网，杜绝数据外泄风险 |
 
+## 部署环境要求
+
+- **Node.js** ≥ 18（推荐 LTS）
+- **npm** ≥ 9 或 **yarn** ≥ 1.22 或 **pnpm** ≥ 8
+- **Rust toolchain** ≥ 1.75（通过 [rustup](https://rustup.rs/) 安装）
+- 平台依赖（按 OS 选择）：
+    - macOS：Xcode Command Line Tools (`xcode-select --install`)
+    - Windows：Microsoft Visual Studio C++ Build Tools + WebView2
+    - Linux：参考 [Tauri 官方依赖列表](https://v2.tauri.app/start/prerequisites/)
+
+确认环境：
+
+```bash
+node -v
+rustc --version
+cargo --version
+```
+
+## 快速开始
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/switchII/AIPCoworker.git
+cd aipcowork
+
+# 2. 安装前端依赖
+npm install
+# 或
+yarn install
+
+# 3. 启动 Web 端（仅前端，浏览器访问 http://localhost:1420）
+npm run dev
+
+# 4. 启动桌面端（前端 + Tauri 外壳，会拉起原生窗口）
+npm run tauri dev
+
+# 5. 构建桌面安装包（产物在 src-tauri/target/release/bundle/）
+npm run tauri build
+```
+
+> 首次运行 `tauri dev` / `tauri build` 需要拉取 Rust 依赖并编译，耗时较长（几分钟到十几分钟），后续会有缓存。
+
+## 常用脚本
+
+| 命令 | 说明 |
+| ---- | ---- |
+| `npm run dev` | 启动 Vite 开发服务器（仅前端） |
+| `npm run build` | `vue-tsc --noEmit && vite build`，做类型检查并产出前端构建物 |
+| `npm run preview` | 本地预览生产构建 |
+| `npm run tauri dev` | 启动 Tauri 桌面端（带前端热更新） |
+| `npm run tauri build` | 打包跨平台桌面安装包 |
+
+
 ### 架构设计
 
 AIPCowork 采用 **"外壳-前端-引擎"三层解耦架构**，以 Tauri 2 为桌面外壳、Vue 3 为前端交互层、TypeScript Agent 引擎为智能核心：
@@ -501,57 +554,6 @@ aipcowork/
 └── README.md
 ```
 
-## 环境要求
-
-- **Node.js** ≥ 18（推荐 LTS）
-- **npm** ≥ 9 或 **yarn** ≥ 1.22 或 **pnpm** ≥ 8
-- **Rust toolchain** ≥ 1.75（通过 [rustup](https://rustup.rs/) 安装）
-- 平台依赖（按 OS 选择）：
-    - macOS：Xcode Command Line Tools (`xcode-select --install`)
-    - Windows：Microsoft Visual Studio C++ Build Tools + WebView2
-    - Linux：参考 [Tauri 官方依赖列表](https://v2.tauri.app/start/prerequisites/)
-
-确认环境：
-
-```bash
-node -v
-rustc --version
-cargo --version
-```
-
-## 快速开始
-
-```bash
-# 1. 克隆仓库
-git clone https://github.com/switchII/AIPCoworker.git
-cd aipcowork
-
-# 2. 安装前端依赖
-npm install
-# 或
-yarn install
-
-# 3. 启动 Web 端（仅前端，浏览器访问 http://localhost:1420）
-npm run dev
-
-# 4. 启动桌面端（前端 + Tauri 外壳，会拉起原生窗口）
-npm run tauri dev
-
-# 5. 构建桌面安装包（产物在 src-tauri/target/release/bundle/）
-npm run tauri build
-```
-
-> 首次运行 `tauri dev` / `tauri build` 需要拉取 Rust 依赖并编译，耗时较长（几分钟到十几分钟），后续会有缓存。
-
-## 常用脚本
-
-| 命令 | 说明 |
-| ---- | ---- |
-| `npm run dev` | 启动 Vite 开发服务器（仅前端） |
-| `npm run build` | `vue-tsc --noEmit && vite build`，做类型检查并产出前端构建物 |
-| `npm run preview` | 本地预览生产构建 |
-| `npm run tauri dev` | 启动 Tauri 桌面端（带前端热更新） |
-| `npm run tauri build` | 打包跨平台桌面安装包 |
 
 ## 路由说明
 
