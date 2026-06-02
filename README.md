@@ -7,6 +7,16 @@
 
 ---
 
+## 产品预览
+
+| | | |
+| :---: | :---: | :---: |
+| ![产品预览1](images/cowork_1.jpg) | ![产品预览2](images/cowork_2.jpg) | ![产品预览3](images/cowork_3.jpg) |
+| ![产品预览4](images/cowork_4.jpg) | ![产品预览5](images/cowork_5.jpg) | ![产品预览6](images/cowork_6.jpg) |
+| ![产品预览7](images/cowork_7.jpg) | | |
+
+---
+
 ## 核心代码
 
 > **Gemma 4 原生函数调用（Native Function Calling）实现**
