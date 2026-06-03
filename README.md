@@ -9,6 +9,10 @@
 
 ## 产品预览
 
+> 视频演示
+
+<video src="images/demo.mp4" controls="controls" width="100%">您的浏览器不支持视频播放</video>
+
 | | | |
 | :---: | :---: | :---: |
 | ![产品预览1](images/cowork_1.jpg) | ![产品预览2](images/cowork_2.jpg) | ![产品预览3](images/cowork_3.jpg) |
