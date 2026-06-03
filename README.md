@@ -11,8 +11,7 @@
 
 > 视频演示
  
-![产品演示视频](images/demo.mp4)
-> 点击图片在Github唤起视频播放
+点击查看视频演示<a href="images/demo.mp4" target="_blank">查看视频</a>
 
 | | | |
 | :---: | :---: | :---: |
